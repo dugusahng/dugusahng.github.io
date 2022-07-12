@@ -258,7 +258,7 @@ P2 = (P2 &amp; 0x1f) | 0x80; P0 = led_state; P2 &amp;= 0x1f;
 <p>u16 get_sonic()<br>{	<br>    send_sonic();<br>    TR1 &#x3D; 1;<br>    while((RX &#x3D;&#x3D; 1)&amp;&amp;(TF1 &#x3D;&#x3D; 0));	<br>    TR1 &#x3D; 0;<br>    if(TF1 &#x3D;&#x3D; 1)<br>    {<br>        TF1 &#x3D; 0;<br>    }<br>    else<br>    {<br>     	time &#x3D; TH1 *256 + TL1;<br>        distance &#x3D; (u16)(0.017 * time);	<br>    }<br>    TH1 &#x3D; 0;<br>    TL1 &#x3D; 0;<br>    return distance;	<br>}</p>
 <p>void Timer0Init(void)		&#x2F;&#x2F;2毫秒@12.000MHz<br>{<br>    AUXR |&#x3D; 0x80;		&#x2F;&#x2F;定时器时钟1T模式<br>    TMOD &amp;&#x3D; 0xF0;		&#x2F;&#x2F;设置定时器模式<br>    TL0 &#x3D; 0x40;		&#x2F;&#x2F;设置定时初始值<br>    TH0 &#x3D; 0xA2;		&#x2F;&#x2F;设置定时初始值<br>    TF0 &#x3D; 0;		&#x2F;&#x2F;清除TF0标志<br>    TR0 &#x3D; 1;		&#x2F;&#x2F;定时器0开始计时<br>    ET0 &#x3D; 1;<br>    EA &#x3D; 1;	<br>}</p>
 </p>
-      <div class="post-button"><a class="btn" href="/2022/07/11/test/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
+      <div class="post-button"><a class="btn" href="/2022/07/11/test/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>阅读更多</a></div>
     </div>
   </div>
   <div class="lx-entry padding">
@@ -266,7 +266,7 @@ P2 = (P2 &amp; 0x1f) | 0x80; P0 = led_state; P2 &amp;= 0x1f;
       <h2 class="title"><a href="/2022/07/10/my-frist-blog/">人生第一次</a></h2>
       <span class="lx-post-detail"><i class="fa fa-calendar-o"></i> 2022-07-10</span>
       <p><h1 id="今天是我写博客的第一天"><a href="#今天是我写博客的第一天" class="headerlink" title="今天是我写博客的第一天"></a>今天是我写博客的第一天</h1><h2 id="不知道写点什么好"><a href="#不知道写点什么好" class="headerlink" title="不知道写点什么好"></a>不知道写点什么好</h2><h3 id="下午骑电车送弟弟上学时，下雨了，我未雨绸缪拿上了伞，但是还是变成了落汤鸡"><a href="#下午骑电车送弟弟上学时，下雨了，我未雨绸缪拿上了伞，但是还是变成了落汤鸡" class="headerlink" title="下午骑电车送弟弟上学时，下雨了，我未雨绸缪拿上了伞，但是还是变成了落汤鸡!"></a>下午骑电车送弟弟上学时，下雨了，我未雨绸缪拿上了伞，但是还是变成了落汤鸡!</h3></p>
-      <div class="post-button"><a class="btn" href="/2022/07/10/my-frist-blog/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
+      <div class="post-button"><a class="btn" href="/2022/07/10/my-frist-blog/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>阅读更多</a></div>
     </div>
   </div>
   <div class="lx-entry padding">
@@ -287,7 +287,7 @@ P2 = (P2 &amp; 0x1f) | 0x80; P0 = led_state; P2 &amp;= 0x1f;
 
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 </p>
-      <div class="post-button"><a class="btn" href="/2022/07/10/hello-world/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>Read More</a></div>
+      <div class="post-button"><a class="btn" href="/2022/07/10/hello-world/" rel="noopener"><i class="fa fa-angle-double-right fa-fw"></i>阅读更多</a></div>
     </div>
   </div>
 
@@ -327,18 +327,18 @@ P2 = (P2 &amp; 0x1f) | 0x80; P0 = led_state; P2 &amp;= 0x1f;
   </div>
   <nav class="menu-container">
   <ul class="menu-items">
-    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
-    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>首页</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>归档</a></li>
     
     <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
+      <i class="fa fa-bookmark fa-fw"></i>页面</span>
         <ul>
           <li><a href="/guestbook/">Guestbook</a></li>
         <li><a href="/about/">About</a></li>
         </ul>
     </li>
     <li class="has-sub"><span class="dropdown-heading">
-      <i class="fa fa-link fa-fw"></i>Friends</span>
+      <i class="fa fa-link fa-fw"></i>友链</span>
         <ul>
           <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
         </ul>
