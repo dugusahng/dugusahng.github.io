@@ -1169,7 +1169,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #d56b09;
+  background: #9af2ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1528,6 +1528,14 @@ pre .javascript .function {
 }
 .use-motion .collection-header {
   opacity: 0;
+}
+.post-body p a {
+  color: #0593d3;
+  border-bottom: none;
+}
+.post-body p a:hover {
+  color: #0477ab;
+  text-decoration: underline;
 }
 .posts-collapse {
   margin-left: 35px;
@@ -2256,11 +2264,11 @@ mjx-container + br {
   padding: 0;
   position: absolute;
   top: 0;
-  width: 240px;
+  width: 260px;
 }
 @media (min-width: 1200px) {
   .header-inner {
-    width: 240px;
+    width: 260px;
   }
 }
 @media (max-width: 991px) {
@@ -2287,7 +2295,7 @@ mjx-container + br {
   box-shadow: initial;
   box-sizing: border-box;
   padding: 40px;
-  width: calc(100% - 252px);
+  width: calc(100% - 272px);
 }
 @media (max-width: 991px) {
   .content-wrap {
@@ -2429,7 +2437,7 @@ mjx-container + br {
   box-shadow: none;
   margin-top: 100%;
   position: static;
-  width: 240px;
+  width: 260px;
 }
 @media (max-width: 991px) {
   .sidebar {
@@ -2445,7 +2453,7 @@ mjx-container + br {
   box-shadow: initial;
   box-sizing: border-box;
   color: var(--text-color);
-  width: 240px;
+  width: 260px;
   opacity: 0;
 }
 .sidebar-inner.affix {
