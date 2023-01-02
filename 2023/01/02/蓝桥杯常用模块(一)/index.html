@@ -20,30 +20,33 @@
     var CONFIG = {"hostname":"dugusahng.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","Pisces | Gemini":260,"Muse | Mist":260,"width":260,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":"ture","mediumzoom":false,"lazyload":false,"pangu":"ture","comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":"ture","trigger":"auto","top_n_per_article":1,"unescape":false,"preload":"ture"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Life is like an adverse journey,    I am also a pedestrian">
-<meta property="og:type" content="website">
-<meta property="og:title" content="独孤觞">
-<meta property="og:url" content="https://dugusahng.github.io/index.html">
+  <meta name="description" content="ds18b20模块一 学习前要须掌握的知识有:  程序模块化的应用  数码管显示的应用  定时器的应用  二 ds18b20模块的原理1 ds18b20的介绍DS18B20是美国DALLAS半导体公司继DS1820之后最新推出的一种改进型智能温度传感器。与传统的热敏电阻相比，他能够直接读出被测温度并且可根据实际要求通过简单的编程实现9～12位的数字值读数方式。可以分别在93.75 ms和750 m">
+<meta property="og:type" content="article">
+<meta property="og:title" content="蓝桥杯单片机常用模块之一:ds18b20模块">
+<meta property="og:url" content="https://dugusahng.github.io/2023/01/02/%E8%93%9D%E6%A1%A5%E6%9D%AF%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97(%E4%B8%80)/index.html">
 <meta property="og:site_name" content="独孤觞">
-<meta property="og:description" content="Life is like an adverse journey,    I am also a pedestrian">
+<meta property="og:description" content="ds18b20模块一 学习前要须掌握的知识有:  程序模块化的应用  数码管显示的应用  定时器的应用  二 ds18b20模块的原理1 ds18b20的介绍DS18B20是美国DALLAS半导体公司继DS1820之后最新推出的一种改进型智能温度传感器。与传统的热敏电阻相比，他能够直接读出被测温度并且可根据实际要求通过简单的编程实现9～12位的数字值读数方式。可以分别在93.75 ms和750 m">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-01-02T03:11:37.657Z">
+<meta property="article:modified_time" content="2023-01-02T04:41:51.910Z">
 <meta property="article:author" content="dugushang">
+<meta property="article:tag" content="蓝桥杯">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://dugusahng.github.io/">
+<link rel="canonical" href="https://dugusahng.github.io/2023/01/02/%E8%93%9D%E6%A1%A5%E6%9D%AF%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97(%E4%B8%80)/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 <link rel="stylesheet" href="https://lib.baomitu.com/social-share.js/1.0.16/css/share.min.css">
-  <title>独孤觞</title>
+  <title>蓝桥杯单片机常用模块之一:ds18b20模块 | 独孤觞</title>
   
 
 
@@ -194,9 +197,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -212,10 +216,9 @@
       <meta itemprop="name" content="独孤觞">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/01/02/%E8%93%9D%E6%A1%A5%E6%9D%AF%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97(%E4%B8%80)/" class="post-title-link" itemprop="url">蓝桥杯单片机常用模块之一:ds18b20模块</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          蓝桥杯单片机常用模块之一:ds18b20模块
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -241,7 +244,14 @@
                 </span>
             </span>
 
-          <br>
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
@@ -266,7 +276,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="ds18b20模块"><a href="#ds18b20模块" class="headerlink" title="ds18b20模块"></a>ds18b20模块</h1><h2 id="一-学习前要"><a href="#一-学习前要" class="headerlink" title="一 学习前要"></a>一 学习前要</h2><h3 id="须掌握的知识有"><a href="#须掌握的知识有" class="headerlink" title="须掌握的知识有:"></a>须掌握的知识有:</h3><ul>
+        <h1 id="ds18b20模块"><a href="#ds18b20模块" class="headerlink" title="ds18b20模块"></a>ds18b20模块</h1><h2 id="一-学习前要"><a href="#一-学习前要" class="headerlink" title="一 学习前要"></a>一 学习前要</h2><h3 id="须掌握的知识有"><a href="#须掌握的知识有" class="headerlink" title="须掌握的知识有:"></a>须掌握的知识有:</h3><ul>
 <li><input checked="" disabled="" type="checkbox"> 程序模块化的应用</li>
 <li><input checked="" disabled="" type="checkbox"> 数码管显示的应用</li>
 <li><input checked="" disabled="" type="checkbox"> 定时器的应用</li>
@@ -316,310 +326,98 @@
 <h3 id="onewire-c"><a href="#onewire-c" class="headerlink" title="onewire.c"></a>onewire.c</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  程序说明: 单总线驱动程序</span></span><br><span class="line"><span class="comment">  软件环境: Keil uVision 4.10 </span></span><br><span class="line"><span class="comment">  硬件环境: CT107单片机综合实训平台(外部晶振12MHz) STC89C52RC单片机</span></span><br><span class="line"><span class="comment">  日    期: 2011-8-9</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;reg52.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;onewire.h&quot;</span></span></span><br><span class="line"></span><br><span class="line">sbit DQ = P1^<span class="number">4</span>;  <span class="comment">//单总线接口</span></span><br><span class="line"><span class="keyword">extern</span> u8 temp_dot;</span><br><span class="line">	</span><br><span class="line"><span class="comment">//单总线延时函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">Delay_OneWire</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> t)</span>  <span class="comment">//STC89C52RC</span></span><br><span class="line">&#123;</span><br><span class="line">	u8 i;</span><br><span class="line">	<span class="keyword">while</span>(t--)<span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; <span class="number">12</span>; i++);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//通过单总线向DS18B20写一个字节</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">Write_DS18B20</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> dat)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">8</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		DQ = <span class="number">0</span>;</span><br><span class="line">		DQ = dat&amp;<span class="number">0x01</span>;</span><br><span class="line">		Delay_OneWire(<span class="number">5</span>);</span><br><span class="line">		DQ = <span class="number">1</span>;</span><br><span class="line">		dat &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	Delay_OneWire(<span class="number">5</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//从DS18B20读取一个字节</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> <span class="title function_">Read_DS18B20</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> i;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> dat;</span><br><span class="line">  </span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">8</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		DQ = <span class="number">0</span>;</span><br><span class="line">		dat &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">		DQ = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">if</span>(DQ)</span><br><span class="line">		&#123;</span><br><span class="line">			dat |= <span class="number">0x80</span>;</span><br><span class="line">		&#125;	    </span><br><span class="line">		Delay_OneWire(<span class="number">5</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> dat;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//DS18B20设备初始化</span></span><br><span class="line">bit <span class="title function_">init_ds18b20</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  	bit initflag = <span class="number">0</span>;</span><br><span class="line">  	</span><br><span class="line">  	DQ = <span class="number">1</span>;</span><br><span class="line">  	Delay_OneWire(<span class="number">12</span>);</span><br><span class="line">  	DQ = <span class="number">0</span>;</span><br><span class="line">  	Delay_OneWire(<span class="number">80</span>);</span><br><span class="line">  	DQ = <span class="number">1</span>;</span><br><span class="line">  	Delay_OneWire(<span class="number">10</span>); </span><br><span class="line">    initflag = DQ;     </span><br><span class="line">  	Delay_OneWire(<span class="number">5</span>);</span><br><span class="line">  </span><br><span class="line">  	<span class="keyword">return</span> initflag;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//===============================//</span></span><br><span class="line"><span class="comment">//此分界线上面的比赛资源包里都有,比赛时只用写下面一个函数即可</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> <span class="title function_">rd_temperature</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	u8 low,high,temp;	 <span class="comment">//定义低8位，高8位，</span></span><br><span class="line">	init_ds18b20();		<span class="comment">//	  初始化</span></span><br><span class="line">	Write_DS18B20(<span class="number">0xcc</span>);  <span class="comment">//   关rom</span></span><br><span class="line">	Write_DS18B20(<span class="number">0x44</span>);	<span class="comment">// 开始转换温度</span></span><br><span class="line">	Delay_OneWire(<span class="number">200</span>);		 </span><br><span class="line"></span><br><span class="line">	init_ds18b20();				<span class="comment">// 初始化</span></span><br><span class="line">	Write_DS18B20(<span class="number">0xcc</span>);		  <span class="comment">// 关rom</span></span><br><span class="line">	Write_DS18B20(<span class="number">0xbe</span>);			<span class="comment">// 读暂存器</span></span><br><span class="line">	Delay_OneWire(<span class="number">200</span>);				</span><br><span class="line">  </span><br><span class="line">	low = Read_DS18B20();				<span class="comment">//	  低8位 高四位整数低4位 低四位 小数部分</span></span><br><span class="line">	high = Read_DS18B20();			<span class="comment">//	高8位 高五位符号位判断正负  第三位 整数高三位</span></span><br><span class="line">	temp_dot = low &amp; <span class="number">0x0f</span>;			 <span class="comment">//	摘除小数部分</span></span><br><span class="line">	low &gt;&gt;= <span class="number">4</span>;					   <span class="comment">//去掉小数部分</span></span><br><span class="line">	high &lt;&lt;= <span class="number">4</span>;					   <span class="comment">//去掉前四个符号位</span></span><br><span class="line">	temp = 	(low | high);</span><br><span class="line">	<span class="keyword">if</span>((temp &amp; <span class="number">0x80</span>) == <span class="number">0x80</span>) <span class="comment">//temp为负</span></span><br><span class="line">	&#123;</span><br><span class="line">		temp = ~(temp<span class="number">-1</span>);</span><br><span class="line">		temp_dot = ~(temp_dot<span class="number">-1</span>)*<span class="number">0.625</span>; </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span>					  <span class="comment">//temp为正</span></span><br><span class="line">	&#123;</span><br><span class="line">		temp = temp;</span><br><span class="line">		temp_dot = temp_dot*<span class="number">0.625</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="main-c"><a href="#main-c" class="headerlink" title="main.c"></a>main.c</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;reg52.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;onewire.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;intrins.h&quot;</span></span></span><br><span class="line">sfr AUXR = <span class="number">0x8e</span>;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> u8 unsigned char</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> u16 unsigned int</span></span><br><span class="line"></span><br><span class="line">u8 table_du[] = &#123;<span class="number">0xc0</span>,<span class="number">0xf9</span>,<span class="number">0xa4</span>,<span class="number">0xb0</span>,<span class="number">0x99</span>,<span class="number">0x92</span>,<span class="number">0x82</span>,<span class="number">0xf8</span>,<span class="number">0x80</span>,<span class="number">0x90</span>,<span class="number">0xff</span>&#125;;<span class="comment">//共阳数码管0-9显示</span></span><br><span class="line">u8 table_we[] = &#123;<span class="number">0x80</span>,<span class="number">0x40</span>,<span class="number">0x20</span>,<span class="number">0x10</span>,<span class="number">0x08</span>,<span class="number">0x04</span>,<span class="number">0x02</span>,<span class="number">0x01</span>&#125;;	            	<span class="comment">//位选端</span></span><br><span class="line">u8 temperature_table[<span class="number">8</span>];</span><br><span class="line">u8 set_table[<span class="number">8</span>];</span><br><span class="line">u8 temperature,temp_count;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> u8 temp_dot = <span class="number">0</span>;</span><br><span class="line">bit temp_flag;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Delay100ms</span><span class="params">()</span>		<span class="comment">//@12.000MHz</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> i, j, k;</span><br><span class="line"></span><br><span class="line">	_nop_();</span><br><span class="line">	_nop_();</span><br><span class="line">	i = <span class="number">5</span>;</span><br><span class="line">	j = <span class="number">144</span>;</span><br><span class="line">	k = <span class="number">71</span>;</span><br><span class="line">	<span class="keyword">do</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">do</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">while</span> (--k);</span><br><span class="line">		&#125; <span class="keyword">while</span> (--j);</span><br><span class="line">	&#125; <span class="keyword">while</span> (--i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">display</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">static</span> u8 i;	  <span class="comment">//设为静态变量下次调用值不变</span></span><br><span class="line">	P2 = ((P2 &amp; <span class="number">0x1f</span>) | <span class="number">0xe0</span>);P0 = <span class="number">0xff</span>;P2 &amp;= <span class="number">0x1f</span>;		  <span class="comment">//消隐</span></span><br><span class="line">	P2 = ((P2 &amp; <span class="number">0x1f</span>) | <span class="number">0xc0</span>);P0 = table_we[i];P2 &amp;= <span class="number">0x1f</span>;	<span class="comment">//先位选</span></span><br><span class="line">	P2 = ((P2 &amp; <span class="number">0x1f</span>) | <span class="number">0xe0</span>);P0 = temperature_table[i];P2 &amp;= <span class="number">0x1f</span>;</span><br><span class="line">	i++;</span><br><span class="line">	<span class="keyword">if</span>(i &gt;= <span class="number">8</span>)i = <span class="number">0</span>;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Timer0Init</span><span class="params">(<span class="type">void</span>)</span>		 <span class="comment">//2毫秒@12.000MHz</span></span><br><span class="line">&#123;</span><br><span class="line">	AUXR |= <span class="number">0x80</span>;		<span class="comment">//定时器时钟1T模式</span></span><br><span class="line">	TMOD &amp;= <span class="number">0xF0</span>;		<span class="comment">//设置定时器模式</span></span><br><span class="line">	TL0 = <span class="number">0x40</span>;		<span class="comment">//设置定时初始值</span></span><br><span class="line">	TH0 = <span class="number">0xA2</span>;		<span class="comment">//设置定时初始值</span></span><br><span class="line">	TF0 = <span class="number">0</span>;		<span class="comment">//清除TF0标志</span></span><br><span class="line">	TR0 = <span class="number">1</span>;		<span class="comment">//定时器0开始计时	</span></span><br><span class="line">	ET0 = <span class="number">1</span>;</span><br><span class="line">	EA = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">timer0_isr</span><span class="params">()</span> interrupt 1</span><br><span class="line">&#123;</span><br><span class="line">	temp_count++;</span><br><span class="line">	<span class="keyword">if</span>(temp_count &gt;= <span class="number">250</span>)&#123;temp_count = <span class="number">0</span>;temp_flag = <span class="number">1</span>;&#125;   <span class="comment">//温度的半秒计时</span></span><br><span class="line">	display();	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">table_convert</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	temperature_table[<span class="number">0</span>] = table_du[temp_dot %<span class="number">10</span>];</span><br><span class="line">	temperature_table[<span class="number">1</span>] = table_du[temperature % <span class="number">10</span>]&amp;<span class="number">0x7f</span>;</span><br><span class="line">	temperature_table[<span class="number">2</span>] = table_du[temperature / <span class="number">10</span>];	</span><br><span class="line">	temperature_table[<span class="number">3</span>] = <span class="number">0xff</span>;</span><br><span class="line">	temperature_table[<span class="number">4</span>] = <span class="number">0xff</span>;	</span><br><span class="line">	temperature_table[<span class="number">5</span>] = <span class="number">0xff</span>;</span><br><span class="line">	temperature_table[<span class="number">6</span>] = <span class="number">0xff</span>;	</span><br><span class="line">	temperature_table[<span class="number">7</span>] = <span class="number">0xff</span>;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	u8 x;</span><br><span class="line">	P2 = ((P2 &amp; <span class="number">0x1f</span>) | <span class="number">0xa0</span>);P0 = <span class="number">0x00</span>;P2 &amp;= <span class="number">0x1f</span>;		<span class="comment">//关闭蜂鸣器继电器等</span></span><br><span class="line">	P2 = ((P2 &amp; <span class="number">0x1f</span>) | <span class="number">0x80</span>);P0 = <span class="number">0xff</span>;P2 &amp;= <span class="number">0x1f</span>;		<span class="comment">//LED全灭</span></span><br><span class="line">	<span class="keyword">for</span>(x = <span class="number">0</span>;x &lt; <span class="number">10</span>;x++)&#123;temperature = rd_temperature();Delay100ms();&#125;	</span><br><span class="line">	 <span class="comment">/*上电先多读几次过滤掉初值85，根据手册需要一个90多ms的延迟这边直接延迟100ms*/</span></span><br><span class="line">		Timer0Init();</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		table_convert();</span><br><span class="line">		<span class="keyword">if</span>(temp_flag)			   <span class="comment">//每半秒获取一次温度</span></span><br><span class="line">		&#123;</span><br><span class="line">			temp_flag = <span class="number">0</span>;</span><br><span class="line">			temperature = rd_temperature();	</span><br><span class="line">		&#125;	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
     </div>
 
     
     
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
+    <div class="post-widgets">
+    <div
+      class="social-share"
       
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dugusahng.github.io/2022/11/22/%E6%A0%A1%E5%9B%AD%E7%BE%8E%E6%99%AF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="dugushang">
-      <meta itemprop="description" content="Life is like an adverse journey,    I am also a pedestrian">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="独孤觞">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/11/22/%E6%A0%A1%E5%9B%AD%E7%BE%8E%E6%99%AF/" class="post-title-link" itemprop="url">新工院·美景</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-11-22 12:20:45 / 修改时间：13:11:33" itemprop="dateCreated datePublished" datetime="2022-11-22T12:20:45+08:00">2022-11-22</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%A0%A1%E5%9B%AD%E7%94%9F%E6%B4%BB/" itemprop="url" rel="index"><span itemprop="name">校园生活</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%A0%A1%E5%9B%AD%E7%94%9F%E6%B4%BB/%E6%99%AF%E8%89%B2/" itemprop="url" rel="index"><span itemprop="name">景色</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>140</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+        data-sites="weibo,qq,wechat,tencent,douban,qzone,linkedin,diandian,facebook,twitter,google"
       
-        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
-            <img src="https://s3.uuu.ovh/imgs/2022/11/22/f6d3419761644491.jpeg" itemprop="contentUrl">
-        </div>
-          2022.11.17
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/11/22/%E6%A0%A1%E5%9B%AD%E7%BE%8E%E6%99%AF/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
+      
+        data-wechat-qrcode-title="share.title"
+      
+      
+        data-wechat-qrcode-helper="share.prompt"
+      
+    >
+    </div>
+  </div>
+  <script src="https://lib.baomitu.com/social-share.js/1.0.16/js/social-share.min.js"></script><script src="//sdk.jinrishici.com/v2/browser/jinrishici.js"></script>
+<script>
+  jinrishici.load((result) => {
+    let jrsc = document.getElementById('jrsc');
+    const data = result.data;
+    let author = data.origin.author;
+    let title = '《' + data.origin.title + '》';
+    let content = data.content.substr(0, data.content.length - 1);
+    let dynasty = data.origin.dynasty.substr(0, data.origin.dynasty.length - 1);
+    jrsc.innerText = content + ' @ ' + dynasty + '·' + author + title;
+  });
+</script>
+<div style="text-align: center"><span id="jrsc" >正在加载今日诗词....</span></div>
+
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatreward.png" alt="dugushang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipayreward.jpg" alt="dugushang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
         
-      
-    </div>
 
-    
-    
-    
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>dugushang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://dugusahng.github.io/2023/01/02/%E8%93%9D%E6%A1%A5%E6%9D%AF%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97(%E4%B8%80)/" title="蓝桥杯单片机常用模块之一:ds18b20模块">https://dugusahng.github.io/2023/01/02/蓝桥杯常用模块(一)/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/%E8%93%9D%E6%A1%A5%E6%9D%AF/" rel="tag"># 蓝桥杯</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dugusahng.github.io/2022/10/27/my-frist-blog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="dugushang">
-      <meta itemprop="description" content="Life is like an adverse journey,    I am also a pedestrian">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="独孤觞">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/10/27/my-frist-blog/" class="post-title-link" itemprop="url">人生第一次</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-10-27 20:14:44" itemprop="dateCreated datePublished" datetime="2022-10-27T20:14:44+08:00">2022-10-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-07-13 15:22:13" itemprop="dateModified" datetime="2022-07-13T15:22:13+08:00">2022-07-13</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B0%B4%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">水果</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B0%B4%E6%9E%9C/%E8%8B%B9%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">苹果</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>56</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="今天是我写博客的第一天"><a href="#今天是我写博客的第一天" class="headerlink" title="今天是我写博客的第一天"></a>今天是我写博客的第一天</h1><h2 id="不知道写点什么好"><a href="#不知道写点什么好" class="headerlink" title="不知道写点什么好"></a>不知道写点什么好</h2><h3 id="下午骑电车送弟弟上学时，下雨了，我未雨绸缪拿上了伞，但是还是变成了落汤鸡"><a href="#下午骑电车送弟弟上学时，下雨了，我未雨绸缪拿上了伞，但是还是变成了落汤鸡" class="headerlink" title="下午骑电车送弟弟上学时，下雨了，我未雨绸缪拿上了伞，但是还是变成了落汤鸡!"></a>下午骑电车送弟弟上学时，下雨了，我未雨绸缪拿上了伞，但是还是变成了落汤鸡!</h3>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dugusahng.github.io/2022/07/13/test2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="dugushang">
-      <meta itemprop="description" content="Life is like an adverse journey,    I am also a pedestrian">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="独孤觞">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/07/13/test2/" class="post-title-link" itemprop="url">六国论</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-07-13 00:27:43" itemprop="dateCreated datePublished" datetime="2022-07-13T00:27:43+08:00">2022-07-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-11-22 13:04:17" itemprop="dateModified" datetime="2022-11-22T13:04:17+08:00">2022-11-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0/%E6%96%87%E8%A8%80%E6%96%87/" itemprop="url" rel="index"><span itemprop="name">文言文</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>656</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
-            <img src="https://images.pexels.com/photos/1279813/pexels-photo-1279813.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" itemprop="contentUrl">
-        </div>
-          六国破灭，非兵不利，战不善，弊在赂秦。赂秦而力亏，破灭之道也。或曰：六国互丧，率赂秦耶？曰：不赂者以赂者丧，盖失强援，不能独完。故曰：弊在赂秦也。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/07/13/test2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/11/22/%E6%A0%A1%E5%9B%AD%E7%BE%8E%E6%99%AF/" rel="prev" title="新工院·美景">
+      <i class="fa fa-chevron-left"></i> 新工院·美景
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -695,6 +493,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ds18b20%E6%A8%A1%E5%9D%97"><span class="nav-number">1.</span> <span class="nav-text">ds18b20模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80-%E5%AD%A6%E4%B9%A0%E5%89%8D%E8%A6%81"><span class="nav-number">1.1.</span> <span class="nav-text">一 学习前要</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%BB%E6%8E%8C%E6%8F%A1%E7%9A%84%E7%9F%A5%E8%AF%86%E6%9C%89"><span class="nav-number">1.1.1.</span> <span class="nav-text">须掌握的知识有:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C-ds18b20%E6%A8%A1%E5%9D%97%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">二 ds18b20模块的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-ds18b20%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.2.1.</span> <span class="nav-text">1 ds18b20的介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-DS18B20%E7%9A%84%E4%B8%BB%E8%A6%81%E7%89%B9%E6%80%A7"><span class="nav-number">1.2.2.</span> <span class="nav-text">2 DS18B20的主要特性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E5%B0%B1%E4%B8%8D%E5%9C%A8%E6%AD%A4%E8%B5%98%E8%BF%B0-%E8%AF%A6%E6%83%85%E7%82%B9%E5%87%BB%E4%B8%8B%E9%9D%A2%E9%93%BE%E6%8E%A5"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">工作原理就不在此赘述,详情点击下面链接:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-DS18B20%E6%A8%A1%E5%9D%97%E7%A8%8B%E5%BA%8F%E7%9A%84%E7%BC%96%E5%86%99"><span class="nav-number">1.2.3.</span> <span class="nav-text">3 DS18B20模块程序的编写</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-0-625-%E8%BF%99%E4%B8%AA%E6%95%B0%E6%98%AF%E6%80%8E%E4%B9%88%E6%9D%A5%E7%9A%84"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">关于 0.625 这个数是怎么来的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AF%94%E8%B5%9B%E5%8F%AA%E7%94%A8%E5%88%B0%E8%BF%99%E4%B8%A4%E4%B8%AA%E6%95%B0-0-625-%E5%92%8C-6-25"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">比赛只用到这两个数 0.625 和 6.25</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89-%E4%B8%BB%E8%A6%81%E4%BB%A3%E7%A0%81"><span class="nav-number">1.3.</span> <span class="nav-text">三 主要代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#onewire-h"><span class="nav-number">1.3.1.</span> <span class="nav-text">onewire.h</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#onewire-c"><span class="nav-number">1.3.2.</span> <span class="nav-text">onewire.c</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main-c"><span class="nav-number">1.3.3.</span> <span class="nav-text">main.c</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
