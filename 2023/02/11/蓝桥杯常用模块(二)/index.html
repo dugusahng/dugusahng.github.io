@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dugusahng.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","Pisces | Gemini":260,"Muse | Mist":260,"width":260,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":"ture","mediumzoom":false,"lazyload":false,"pangu":"ture","comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":"ture","trigger":"auto","top_n_per_article":1,"unescape":false,"preload":"ture"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="2023.02.11">
+<meta property="og:type" content="article">
+<meta property="og:title" content="蓝桥杯单片机常用模块之四:ds1302模块">
+<meta property="og:url" content="https://dugusahng.github.io/2023/02/11/%E8%93%9D%E6%A1%A5%E6%9D%AF%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97(%E4%BA%8C)/index.html">
+<meta property="og:site_name" content="独孤觞">
+<meta property="og:description" content="2023.02.11">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s3.bmp.ovh/imgs/2022/11/22/054f3ddc2d0ac090.jpeg">
+<meta property="article:published_time" content="2023-02-11T12:51:59.345Z">
+<meta property="article:modified_time" content="2023-02-11T12:56:11.470Z">
+<meta property="article:author" content="dugushang">
+<meta property="article:tag" content="蓝桥杯">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s3.bmp.ovh/imgs/2022/11/22/054f3ddc2d0ac090.jpeg">
+
+<link rel="canonical" href="https://dugusahng.github.io/2023/02/11/%E8%93%9D%E6%A1%A5%E6%9D%AF%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97(%E4%BA%8C)/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="https://lib.baomitu.com/social-share.js/1.0.16/css/share.min.css">
+  <title>蓝桥杯单片机常用模块之四:ds1302模块 | 独孤觞</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<!--pjax：防止跳转页面音乐暂停-->
+ <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script>
+
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">独孤觞</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">人生如逆旅,我亦是行人</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-fiend">
+
+    <a href="/fiend/" rel="section"><i class="fa fa-user fa-fw"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dugusahng.github.io/2023/02/11/%E8%93%9D%E6%A1%A5%E6%9D%AF%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97(%E4%BA%8C)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="dugushang">
+      <meta itemprop="description" content="Life is like an adverse journey,    I am also a pedestrian">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独孤觞">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          蓝桥杯单片机常用模块之四:ds1302模块
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-02-11 20:51:59 / 修改时间：20:56:11" itemprop="dateCreated datePublished" datetime="2023-02-11T20:51:59+08:00">2023-02-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%93%9D%E6%A1%A5%E6%9D%AF/" itemprop="url" rel="index"><span itemprop="name">蓝桥杯</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%93%9D%E6%A1%A5%E6%9D%AF/%E5%8D%95%E7%89%87%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">单片机</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>9 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+            <img src="https://s3.bmp.ovh/imgs/2022/11/22/054f3ddc2d0ac090.jpeg" itemprop="contentUrl">
+        </div>
+        <h1 id="ds1302模块"><a href="#ds1302模块" class="headerlink" title="ds1302模块"></a>ds1302模块</h1><h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>DS1302芯片包含一个实时时钟&#x2F;日历和31字节的静态RAM。<br>它通过一个简单的串行接口与微处理器通信。<br>实时时钟&#x2F;日历提供秒、分钟、小时、日、日、月和年信息。<br>月末的日期会自动调整天数少于31天的月份，包括闰年的更正。时钟运行在24小时或12小时的格式与AM&#x2F;PM指示器使用同步串行通信简化了DS1302与微处理器的接口。</p>
+<p>言而总之,ds1302是用来<strong>记录和处理时间</strong>的一个芯片,当题目要求方框图中提示要用<strong>ds1302</strong>或<strong>RTC时钟</strong>时就<font style=background:#FF0000><strong>必需</strong></font>使用该芯片,所以该芯片也是我们必须掌握的一个.</p>
+<h2 id="关键代码"><a href="#关键代码" class="headerlink" title="关键代码"></a>关键代码</h2><p>在官方提供的底层代码中,我们要用其写出四个函数.</p>
+<h3 id="二进制转化BCD码"><a href="#二进制转化BCD码" class="headerlink" title="二进制转化BCD码"></a>二进制转化BCD码</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">u8 <span class="title function_">DEC_BCD</span><span class="params">(u8 dec)</span>             <span class="comment">//二进制转化BCD码 </span></span><br><span class="line">&#123;</span><br><span class="line">	u8 x;</span><br><span class="line">	x = dec / <span class="number">10</span>;               <span class="comment">//去前四位</span></span><br><span class="line">	x &lt;&lt;= <span class="number">4</span>;                  <span class="comment">//左移</span></span><br><span class="line">	dec %= <span class="number">10</span>;                 <span class="comment">//</span></span><br><span class="line">	dec &amp;= <span class="number">0x0f</span>;</span><br><span class="line">	<span class="keyword">return</span> (x | dec);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>举例:  12</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dec = <span class="number">12</span>;  </span><br><span class="line">x =  <span class="number">12</span> / <span class="number">10</span>;  <span class="comment">// x = 1;得到十位数的数据</span></span><br><span class="line">x &lt;&lt;= <span class="number">4</span>;  <span class="comment">//向左移四位,后四位补零</span></span><br><span class="line"><span class="number">12</span> %= <span class="number">10</span>; <span class="comment">// x = 2; 得到个位数的数据</span></span><br><span class="line">dec &amp;= <span class="number">0x0f</span>; <span class="comment">//保留后四位</span></span><br><span class="line"><span class="keyword">return</span>(<span class="number">0001</span> | <span class="number">0011</span>)</span><br><span class="line"><span class="comment">//最后输出0x12</span></span><br></pre></td></tr></table></figure>
+
+<p>为什么这么算呢?我们是把十位和个位分开算的,0x12明明不等于12啊,等于18吧,请读者自行体会,说多了就跑题了,理解不了也没关系,先用着,慢慢学着学着就明白了.</p>
+<p><strong>dec  12  0-9</strong></p>
+<p><strong>bin 1100  0-1</strong></p>
+<p><strong>hex   C  0-F</strong></p>
+<p><strong>bcd   0x12    0x00 — 0xff</strong>	   <strong>0001 0010  0x12</strong></p>
+<h3 id="BCD码转化二进制"><a href="#BCD码转化二进制" class="headerlink" title="BCD码转化二进制"></a>BCD码转化二进制</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">u8 <span class="title function_">BCD_DEC</span><span class="params">(u8 bcd)</span>              <span class="comment">//BCD码转化二进制</span></span><br><span class="line">&#123;</span><br><span class="line">	u8 x;</span><br><span class="line">	x = bcd &gt;&gt; <span class="number">4</span>;</span><br><span class="line">	bcd &amp;= <span class="number">0x0f</span>;</span><br><span class="line">	bcd = x*<span class="number">10</span>+bcd;</span><br><span class="line">	<span class="keyword">return</span> bcd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据上面一个例子,这个就不难理解</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x12</span> &gt;&gt; <span class="number">4</span>; ==  <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="number">0x12</span> &amp;= <span class="number">0x0f</span>; == <span class="number">2</span></span><br><span class="line"></span><br><span class="line">bcd = <span class="number">1</span> * <span class="number">10</span> + <span class="number">2</span>; == <span class="number">12</span> </span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="初始化模块"><a href="#初始化模块" class="headerlink" title="初始化模块"></a>初始化模块</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">init_time</span><span class="params">()</span>               <span class="comment">//单片机向ds1302数据的函数</span></span><br><span class="line">&#123;</span><br><span class="line">	sec = DEC_BCD(sec);		 		</span><br><span class="line">	min = DEC_BCD(min);</span><br><span class="line">	hour = DEC_BCD(hour);</span><br><span class="line">    <span class="comment">//因为需要用按键修改时间所有 需要变量来控制写时间 如果题目只是初始化需要改时间的话</span></span><br><span class="line">	<span class="comment">//可以直接写对应的BCD码值 就不用写 DEC_BCD()了,本函数就可从下面一行直接写起</span></span><br><span class="line">	Write_Ds1302_Byte(<span class="number">0x8e</span>,<span class="number">0x00</span>);    <span class="comment">//写允许</span></span><br><span class="line">	Write_Ds1302_Byte(<span class="number">0x80</span>,sec);</span><br><span class="line">	Write_Ds1302_Byte(<span class="number">0x82</span>,min);</span><br><span class="line">	Write_Ds1302_Byte(<span class="number">0x84</span>,hour);</span><br><span class="line">	Write_Ds1302_Byte(<span class="number">0x8e</span>,<span class="number">0x80</span>);  <span class="comment">//关</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该函数中前三行根据题目要求是否要求修改时间,如果要修改就加上,没有就不用,写入的地址和命令都是固定的.不用理解,记住就对了.</p>
+<h3 id="读取时间数据"><a href="#读取时间数据" class="headerlink" title="读取时间数据"></a>读取时间数据</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">read_ds1302</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	u8 d;</span><br><span class="line">	d = Read_Ds1302_Byte (<span class="number">0x81</span>);</span><br><span class="line">	sec = BCD_DEC(d);</span><br><span class="line">	d = Read_Ds1302_Byte (<span class="number">0x83</span>);</span><br><span class="line">	min = BCD_DEC(d);</span><br><span class="line">	d = Read_Ds1302_Byte (<span class="number">0x85</span>);</span><br><span class="line">	hour = BCD_DEC(d);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>读取的地址都是固定的.不用理解,记住就对了.</p>
+<h2 id="全部代码"><a href="#全部代码" class="headerlink" title="全部代码"></a>全部代码</h2><h3 id="ds1302-h"><a href="#ds1302-h" class="headerlink" title="ds1302.h"></a>ds1302.h</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> __DS1302_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __DS1302_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> u8 unsigned char</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Write_Ds1302</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> temp)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Write_Ds1302_Byte</span><span class="params">( <span class="type">unsigned</span> <span class="type">char</span> address,<span class="type">unsigned</span> <span class="type">char</span> dat )</span>;</span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> <span class="title function_">Read_Ds1302_Byte</span><span class="params">( <span class="type">unsigned</span> <span class="type">char</span> address )</span>;</span><br><span class="line"></span><br><span class="line">u8 <span class="title function_">DEC_BCD</span><span class="params">(u8 dec)</span>; </span><br><span class="line">u8 <span class="title function_">BCD_DEC</span><span class="params">(u8 bcd)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">init_time</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">read_ds1302</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="ds1302-c"><a href="#ds1302-c" class="headerlink" title="ds1302.c"></a>ds1302.c</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  程序说明: DS1302驱动程序</span></span><br><span class="line"><span class="comment">  软件环境: Keil uVision 4.10 </span></span><br><span class="line"><span class="comment">  硬件环境: CT107单片机综合实训平台 8051，12MHz</span></span><br><span class="line"><span class="comment">  日    期: 2011-8-9</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;intrins.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> u8 unsigned char</span></span><br><span class="line"></span><br><span class="line">sbit SCK=P1^<span class="number">7</span>;		</span><br><span class="line">sbit SDA=P2^<span class="number">3</span>;		</span><br><span class="line">sbit RST = P1^<span class="number">3</span>;   <span class="comment">// DS1302复位												</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> u8 sec,min,hour;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Write_Ds1302</span><span class="params">(<span class="type">unsigned</span>  <span class="type">char</span> temp)</span> </span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> i;</span><br><span class="line">	<span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">8</span>;i++)     	</span><br><span class="line">	&#123; </span><br><span class="line">		SCK=<span class="number">0</span>;</span><br><span class="line">		SDA=temp&amp;<span class="number">0x01</span>;</span><br><span class="line">		temp&gt;&gt;=<span class="number">1</span>; </span><br><span class="line">		SCK=<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;   </span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Write_Ds1302_Byte</span><span class="params">( <span class="type">unsigned</span> <span class="type">char</span> address,<span class="type">unsigned</span> <span class="type">char</span> dat )</span>     </span><br><span class="line">&#123;</span><br><span class="line"> 	RST=<span class="number">0</span>;	_nop_();</span><br><span class="line"> 	SCK=<span class="number">0</span>;	_nop_();</span><br><span class="line"> 	RST=<span class="number">1</span>; 	_nop_();  </span><br><span class="line"> 	Write_Ds1302(address);	</span><br><span class="line"> 	Write_Ds1302(dat);			</span><br><span class="line"> 	RST=<span class="number">0</span>; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> <span class="title function_">Read_Ds1302_Byte</span> <span class="params">( <span class="type">unsigned</span> <span class="type">char</span> address )</span></span><br><span class="line">&#123;</span><br><span class="line"> 	<span class="type">unsigned</span> <span class="type">char</span> i,temp=<span class="number">0x00</span>;</span><br><span class="line"> 	RST=<span class="number">0</span>;	_nop_();</span><br><span class="line"> 	SCK=<span class="number">0</span>;	_nop_();</span><br><span class="line"> 	RST=<span class="number">1</span>;	_nop_();</span><br><span class="line"> 	Write_Ds1302(address);</span><br><span class="line"> 	<span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">8</span>;i++) 	</span><br><span class="line"> 	&#123;		</span><br><span class="line">		SCK=<span class="number">0</span>;</span><br><span class="line">		temp&gt;&gt;=<span class="number">1</span>;	</span><br><span class="line"> 		<span class="keyword">if</span>(SDA)</span><br><span class="line"> 		temp|=<span class="number">0x80</span>;	</span><br><span class="line"> 		SCK=<span class="number">1</span>;</span><br><span class="line">	&#125; </span><br><span class="line"> 	RST=<span class="number">0</span>;	_nop_();</span><br><span class="line"> 	SCK=<span class="number">0</span>;	_nop_();</span><br><span class="line">	SCK=<span class="number">1</span>;	_nop_();</span><br><span class="line">	SDA=<span class="number">0</span>;	_nop_();</span><br><span class="line">	SDA=<span class="number">1</span>;	_nop_();</span><br><span class="line">	<span class="keyword">return</span> (temp);			</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//=============================================================//</span></span><br><span class="line"><span class="comment">//此分界线以下需要掌握,以上的代码均由官方提供</span></span><br><span class="line">u8 <span class="title function_">DEC_BCD</span><span class="params">(u8 dec)</span>             <span class="comment">//二进制转化BCD码 </span></span><br><span class="line">&#123;</span><br><span class="line">	u8 x;</span><br><span class="line">	x = dec / <span class="number">10</span>;               <span class="comment">//去前四位</span></span><br><span class="line">	x &lt;&lt;= <span class="number">4</span>;                  <span class="comment">//左移</span></span><br><span class="line">	dec %= <span class="number">10</span>;                 <span class="comment">//</span></span><br><span class="line">	dec &amp;= <span class="number">0x0f</span>;</span><br><span class="line">	<span class="keyword">return</span> (x | dec);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">u8 <span class="title function_">BCD_DEC</span><span class="params">(u8 bcd)</span>              <span class="comment">//BCD码转化二进制</span></span><br><span class="line">&#123;</span><br><span class="line">	u8 x;</span><br><span class="line">	x = bcd &gt;&gt; <span class="number">4</span>;</span><br><span class="line">	bcd &amp;= <span class="number">0x0f</span>;</span><br><span class="line">	bcd = x*<span class="number">10</span>+bcd;</span><br><span class="line">	<span class="keyword">return</span> bcd;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">init_time</span><span class="params">()</span>               <span class="comment">//单片机向ds1302数据的函数</span></span><br><span class="line">&#123;</span><br><span class="line">	sec = DEC_BCD(sec);		 </span><br><span class="line"><span class="comment">//因为需要用按键修改时间所有 需要变量来控制写时间 如果题目只是初始化需要改时间的话</span></span><br><span class="line"><span class="comment">// 可以直接写对应的BCD码值 就不用写 DEC_BCD()了</span></span><br><span class="line">	min = DEC_BCD(min);</span><br><span class="line">	hour = DEC_BCD(hour);</span><br><span class="line">	Write_Ds1302_Byte(<span class="number">0x8e</span>,<span class="number">0x00</span>);    <span class="comment">//写允许</span></span><br><span class="line">	Write_Ds1302_Byte(<span class="number">0x80</span>,sec);</span><br><span class="line">	Write_Ds1302_Byte(<span class="number">0x82</span>,min);</span><br><span class="line">	Write_Ds1302_Byte(<span class="number">0x84</span>,hour);</span><br><span class="line">	Write_Ds1302_Byte(<span class="number">0x8e</span>,<span class="number">0x80</span>); </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">read_ds1302</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	u8 d;	</span><br><span class="line">	d = Read_Ds1302_Byte (<span class="number">0x81</span>);</span><br><span class="line">	sec = BCD_DEC(d);</span><br><span class="line">	d = Read_Ds1302_Byte (<span class="number">0x83</span>);</span><br><span class="line">	min = BCD_DEC(d);</span><br><span class="line">	d = Read_Ds1302_Byte (<span class="number">0x85</span>);</span><br><span class="line">	hour = BCD_DEC(d);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="main-c"><a href="#main-c" class="headerlink" title="main.c"></a>main.c</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;reg52.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ds1302.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> u8 unsigned char</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> u16 unsigned int</span></span><br><span class="line">u8 smg[] = &#123;<span class="number">0xc0</span>,<span class="number">0xf9</span>,<span class="number">0xa4</span>,<span class="number">0xb0</span>,<span class="number">0x99</span>,<span class="number">0x92</span>,<span class="number">0x82</span>,<span class="number">0xf8</span>,<span class="number">0x80</span>,<span class="number">0x90</span>&#125;;</span><br><span class="line"></span><br><span class="line">u8 cp,flash,sec = <span class="number">50</span>,min = <span class="number">59</span>,hour = <span class="number">23</span>,n;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">INIT</span><span class="params">(u8 n,u8 value)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">switch</span>(n)</span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">4</span>: P2 = (P2 &amp; <span class="number">0x1f</span>) | <span class="number">0x80</span>; P0 = value; P2 &amp;= <span class="number">0x1f</span>; <span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">5</span>: P2 = (P2 &amp; <span class="number">0x1f</span>) | <span class="number">0xa0</span>; P0 = value; P2 &amp;= <span class="number">0x1f</span>; <span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">6</span>: P2 = (P2 &amp; <span class="number">0x1f</span>) | <span class="number">0xc0</span>; P0 = value; P2 &amp;= <span class="number">0x1f</span>; <span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">7</span>: P2 = (P2 &amp; <span class="number">0x1f</span>) | <span class="number">0xe0</span>; P0 = value; P2 &amp;= <span class="number">0x1f</span>; <span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">display</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;	 </span><br><span class="line">	 INIT(<span class="number">7</span>,<span class="number">0xff</span>);</span><br><span class="line">	 <span class="keyword">switch</span>(n)</span><br><span class="line">	 &#123;</span><br><span class="line">	 	<span class="keyword">case</span> <span class="number">0</span>:INIT(<span class="number">6</span>,<span class="number">0x80</span>);INIT(<span class="number">7</span>,smg[sec % <span class="number">10</span>]);<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">1</span>:INIT(<span class="number">6</span>,<span class="number">0x40</span>);INIT(<span class="number">7</span>,smg[sec / <span class="number">10</span>]);<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">2</span>:INIT(<span class="number">6</span>,<span class="number">0x20</span>);INIT(<span class="number">7</span>,<span class="number">0xbf</span>);<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">3</span>:INIT(<span class="number">6</span>,<span class="number">0x10</span>);INIT(<span class="number">7</span>,smg[min / <span class="number">10</span>]);<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">4</span>:INIT(<span class="number">6</span>,<span class="number">0x08</span>);INIT(<span class="number">7</span>,smg[min / <span class="number">10</span>]);<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">5</span>:INIT(<span class="number">6</span>,<span class="number">0x04</span>);INIT(<span class="number">7</span>,<span class="number">0xbf</span>);<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">6</span>:INIT(<span class="number">6</span>,<span class="number">0x02</span>);INIT(<span class="number">7</span>,smg[hour / <span class="number">10</span>]);<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">7</span>:INIT(<span class="number">6</span>,<span class="number">0x01</span>);INIT(<span class="number">7</span>,smg[hour / <span class="number">10</span>]);<span class="keyword">break</span>;</span><br><span class="line">	 &#125;</span><br><span class="line">	 n++;<span class="keyword">if</span>(n &gt;= <span class="number">8</span>)n = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">timer0_init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	TMOD = <span class="number">0x01</span>;</span><br><span class="line">	TH0 = (<span class="number">65536</span> - <span class="number">2000</span>) / <span class="number">256</span>;</span><br><span class="line">	TL0 = (<span class="number">65536</span> - <span class="number">2000</span>) % <span class="number">256</span>;</span><br><span class="line">	ET0 = <span class="number">1</span>;</span><br><span class="line">	EA = <span class="number">1</span>;</span><br><span class="line">	TR0 = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">timer0_isr</span><span class="params">(<span class="type">void</span>)</span> interrupt 1</span><br><span class="line">&#123;</span><br><span class="line">	TH0 = (<span class="number">65536</span> - <span class="number">2000</span>) / <span class="number">256</span>;</span><br><span class="line">	TL0 = (<span class="number">65536</span> - <span class="number">2000</span>) % <span class="number">256</span>;</span><br><span class="line">	cp++;<span class="keyword">if</span>(cp &gt;= <span class="number">250</span>)&#123;cp = <span class="number">0</span>;flash = ~flash;&#125;	  <span class="comment">//半秒</span></span><br><span class="line">	display();	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//只看初始化函数和读取函数放在主函数的那个位置就行,</span></span><br><span class="line"><span class="comment">//数码管的写法不必参考,此方法不如数组好用,写着还麻烦</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	INIT(<span class="number">5</span>,<span class="number">0x00</span>);</span><br><span class="line">	INIT(<span class="number">4</span>,<span class="number">0xff</span>);</span><br><span class="line">	timer0_init();</span><br><span class="line">	init_time();</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">	 read_ds1302();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>部分参考:</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/tuygre/article/details/123080975">(5条消息) 蓝桥杯单片机模块代码（DS1302时钟芯片）(代码+注释)_ds1302代码_tuygre的博客-CSDN博客</a></p>
+
+    </div>
+
+    
+    
+    <div class="post-widgets">
+    <div
+      class="social-share"
+      
+        data-sites="weibo,qq,wechat,tencent,douban,qzone,linkedin,diandian,facebook,twitter,google"
+      
+      
+        data-wechat-qrcode-title="share.title"
+      
+      
+        data-wechat-qrcode-helper="share.prompt"
+      
+    >
+    </div>
+  </div>
+  <script src="https://lib.baomitu.com/social-share.js/1.0.16/js/social-share.min.js"></script><script src="//sdk.jinrishici.com/v2/browser/jinrishici.js"></script>
+<script>
+  jinrishici.load((result) => {
+    let jrsc = document.getElementById('jrsc');
+    const data = result.data;
+    let author = data.origin.author;
+    let title = '《' + data.origin.title + '》';
+    let content = data.content.substr(0, data.content.length - 1);
+    let dynasty = data.origin.dynasty.substr(0, data.origin.dynasty.length - 1);
+    jrsc.innerText = content + ' @ ' + dynasty + '·' + author + title;
+  });
+</script>
+<div style="text-align: center"><span id="jrsc" >正在加载今日诗词....</span></div>
+
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatreward.png" alt="dugushang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipayreward.jpg" alt="dugushang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>dugushang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://dugusahng.github.io/2023/02/11/%E8%93%9D%E6%A1%A5%E6%9D%AF%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97(%E4%BA%8C)/" title="蓝桥杯单片机常用模块之四:ds1302模块">https://dugusahng.github.io/2023/02/11/蓝桥杯常用模块(二)/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%93%9D%E6%A1%A5%E6%9D%AF/" rel="tag"># 蓝桥杯</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/01/21/%E6%8C%89%E9%94%AE%E6%A8%A1%E5%9D%97(%E4%BA%8C)/" rel="prev" title="蓝桥杯单片机常用模块之三:按键模块(二)">
+      <i class="fa fa-chevron-left"></i> 蓝桥杯单片机常用模块之三:按键模块(二)
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+<!--qq音乐插件-->
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--qqplaylist外链地址-->   
+<meting-js
+    server="tencent"
+    type="playlist" 
+    id="1416184443"
+    mini="false"
+    fixed="false"
+    list-folded="true"
+    autoplay="false"
+    volume="0.4"
+    theme="#FADFA3"
+    order="list"
+    loop="all"
+    preload="auto"
+    mutex="true">
+</meting-js>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ds1302%E6%A8%A1%E5%9D%97"><span class="nav-number">1.</span> <span class="nav-text">ds1302模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E4%BB%A3%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text">关键代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E8%BD%AC%E5%8C%96BCD%E7%A0%81"><span class="nav-number">1.2.1.</span> <span class="nav-text">二进制转化BCD码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BCD%E7%A0%81%E8%BD%AC%E5%8C%96%E4%BA%8C%E8%BF%9B%E5%88%B6"><span class="nav-number">1.2.2.</span> <span class="nav-text">BCD码转化二进制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A8%A1%E5%9D%97"><span class="nav-number">1.2.3.</span> <span class="nav-text">初始化模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96%E6%97%B6%E9%97%B4%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.4.</span> <span class="nav-text">读取时间数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E9%83%A8%E4%BB%A3%E7%A0%81"><span class="nav-number">1.3.</span> <span class="nav-text">全部代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ds1302-h"><span class="nav-number">1.3.1.</span> <span class="nav-text">ds1302.h</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ds1302-c"><span class="nav-number">1.3.2.</span> <span class="nav-text">ds1302.c</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main-c"><span class="nav-number">1.3.3.</span> <span class="nav-text">main.c</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dugushang"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">dugushang</p>
+  <div class="site-description" itemprop="description">Life is like an adverse journey,    I am also a pedestrian</div>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dugusahng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dugusahng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+    
+    </div>
+  </aside>
+  
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dugushang</span>
+
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">20k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">33 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://lib.baomitu.com/canvas-nest.js/1.0.1/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+  
+
+    </div>
+</body>
+</html>
