@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dugusahng.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","Pisces | Gemini":260,"Muse | Mist":260,"width":260,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":"ture","mediumzoom":false,"lazyload":false,"pangu":"ture","comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":"ture","trigger":"auto","top_n_per_article":1,"unescape":false,"preload":"ture"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="2023.02.25">
+<meta property="og:type" content="article">
+<meta property="og:title" content="蓝桥杯单片机常用模块之五:iic通信">
+<meta property="og:url" content="https://dugusahng.github.io/2023/02/25/%E5%8D%95%E7%89%87%E6%9C%BA%E8%93%9D%E6%A1%A5%E6%9D%AF(%E4%BA%94)/index.html">
+<meta property="og:site_name" content="独孤觞">
+<meta property="og:description" content="2023.02.25">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s3.bmp.ovh/imgs/2023/02/25/11b681a31cd9fa80.jpeg">
+<meta property="article:published_time" content="2023-02-25T11:46:30.181Z">
+<meta property="article:modified_time" content="2023-02-25T11:55:44.285Z">
+<meta property="article:author" content="dugushang">
+<meta property="article:tag" content="蓝桥杯">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s3.bmp.ovh/imgs/2023/02/25/11b681a31cd9fa80.jpeg">
+
+<link rel="canonical" href="https://dugusahng.github.io/2023/02/25/%E5%8D%95%E7%89%87%E6%9C%BA%E8%93%9D%E6%A1%A5%E6%9D%AF(%E4%BA%94)/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="https://lib.baomitu.com/social-share.js/1.0.16/css/share.min.css">
+  <title>蓝桥杯单片机常用模块之五:iic通信 | 独孤觞</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<!--pjax：防止跳转页面音乐暂停-->
+ <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script>
+
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">独孤觞</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">人生如逆旅,我亦是行人</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-fiend">
+
+    <a href="/fiend/" rel="section"><i class="fa fa-user fa-fw"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dugusahng.github.io/2023/02/25/%E5%8D%95%E7%89%87%E6%9C%BA%E8%93%9D%E6%A1%A5%E6%9D%AF(%E4%BA%94)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="dugushang">
+      <meta itemprop="description" content="Life is like an adverse journey,    I am also a pedestrian">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独孤觞">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          蓝桥杯单片机常用模块之五:iic通信
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-02-25 19:46:30 / 修改时间：19:55:44" itemprop="dateCreated datePublished" datetime="2023-02-25T19:46:30+08:00">2023-02-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%93%9D%E6%A1%A5%E6%9D%AF/" itemprop="url" rel="index"><span itemprop="name">蓝桥杯</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%93%9D%E6%A1%A5%E6%9D%AF/%E5%8D%95%E7%89%87%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">单片机</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>13k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>22 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+            <img src="https://s3.bmp.ovh/imgs/2023/02/25/11b681a31cd9fa80.jpeg" itemprop="contentUrl">
+        </div>
+        <h1 id="单片机蓝桥杯-五-IIC通信之AT24C02-amp-PCF8591"><a href="#单片机蓝桥杯-五-IIC通信之AT24C02-amp-PCF8591" class="headerlink" title="单片机蓝桥杯(五):IIC通信之AT24C02&amp;PCF8591"></a>单片机蓝桥杯(五):IIC通信之AT24C02&amp;PCF8591</h1><h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇是关于单片机协会蓝桥杯比赛的文章的最后一篇! 看完本篇相信各位(<del>同志</del>)同学已经初步了解蓝桥杯单片机程序的编写和单片机的硬件原理.可以开始进行真题的练习了噢!相信自己可以的!蓝桥杯省赛的难度并不大.只要按学长给的建议认真准备都可以成功拿奖的喔.</p>
+<h2 id="IIC通信"><a href="#IIC通信" class="headerlink" title="IIC通信"></a>IIC通信</h2><p>  <strong>IIC(Inter－Integrated Circuit)总线</strong>是一种由NXP（原PHILIPS）公司开发的两线式串行总线，用于连接微控制器及其外围设备。多用于主控制器和从器件间的主从通信，在小数据量场合使用，传输距离短，任意时刻只能有一个主机等特性。</p>
+<p><strong>IIC通信</strong>过程由开始、结束、发送、响应、接收五个部分构成。</p>
+<p> 1 、（在发送、接收数据的时候）当SCL为高电平时，SDA线不允许变化；当SCL线为低电平时，SDA线可以任意0、1变化。</p>
+<p> 2、（在任意时候）只有当SCL为高电平时，IIC电路才对SDA线上的电平（0或者1）进行记录，当SCL线为低电平时，无论SDA是高还是低，IIC电路都不对SDA进行采样。</p>
+<p><strong>IIC是半双工，而不是全双工</strong> ，同一时间只可以单向通信.</p>
+<p>我就不<strong>滥竽充数</strong>了,详情看下面专业大佬的解读:</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/as480133937/article/details/105366932"> IIC原理超详细讲解iic</a></p>
+<h2 id="ATC4C02模块"><a href="#ATC4C02模块" class="headerlink" title="ATC4C02模块"></a>ATC4C02模块</h2><p>AT24C02提供2048位的电可擦和可编程只读<strong>存储器</strong>(EEPROM).组织为256， 8位字。</p>
+<p>内部组织32页，每个8字节2K需要8位数据字地址用于随机字寻址也就是说有32页，每一页8Byte，每1Byte是8位，总共就是2Kbit的存储空间.</p>
+<p>AT24C02可以进行<strong>单字节</strong>的读写操作,也可进行<strong>连续多页</strong>的读写.这里只介绍<strong>单字节的读写</strong>原理.多字节的自行百度,或查看芯片手册.省级比赛一般用不上连续读写.</p>
+<h3 id="字节写"><a href="#字节写" class="headerlink" title="字节写:"></a>字节写:</h3><p>操作需要在设备地址字和确认之后有一个8位的数据字地址。一旦收到这个地址，EEPROM将再次响应一个零，然后在第一个8位数据字时钟。接收到8位数据字后，EEPROM将输出一个零。主机必须用一个停止条件终止写序列。此时，EEPROM进入一个内部计时的写周期，到非易失性存储器。在这个写周期中，所有输入都被禁用，EEPROM直到写完成才会响应。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210330105252750.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NDI5MzEz,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="当前地址读取"><a href="#当前地址读取" class="headerlink" title="当前地址读取:"></a>当前地址读取:</h3><p>内部数据字地址计数器维护上次读或写操作期间访问的最后一个地址，该地址加1。这个地址在操作之间保持有效，只要芯片电源是保持的。读取期间的地址“翻转”是从最后一个内存页的最后一个字节到第一个页的第一个字节。写过程中的地址“翻转”是从当前页的最后一个字节到同一页的第一个字节一旦具有读&#x2F;写选择位设置为1的设备地址被打卡并被EEPROM确认。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210330105307507.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3NDI5MzEz,size_16,color_FFFFFF,t_70#pic_center" alt="img"></p>
+<p>详情:<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37429313/article/details/115317374"> AT24C02详解(蓝桥杯单片机模块(IIC总线))</a></p>
+<h3 id="蓝桥杯代码"><a href="#蓝桥杯代码" class="headerlink" title="蓝桥杯代码:"></a>蓝桥杯代码:</h3><p><strong>iic.h</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> _IIC_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _IIC_H</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">write_byte_at24c02</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> adrr, <span class="type">unsigned</span> <span class="type">char</span> dat)</span>; </span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> <span class="title function_">read_byte_at24c02</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> adrr)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">write_nbyte_at24c02</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> adrr, <span class="type">unsigned</span> <span class="type">char</span> *dat,<span class="type">unsigned</span> <span class="type">char</span> lenth)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">read_nbyte_at24c02</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> adrr, <span class="type">unsigned</span> <span class="type">char</span> *dat,<span class="type">unsigned</span> <span class="type">char</span> lenth)</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p><strong>iic.c</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  程序说明: IIC总线驱动程序</span></span><br><span class="line"><span class="comment">  软件环境: Keil uVision 4.10 </span></span><br><span class="line"><span class="comment">  硬件环境: CT107单片机综合实训平台 8051，12MHz</span></span><br><span class="line"><span class="comment">  日    期: 2011-8-9</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;reg52.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;intrins.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DELAY_TIME 5</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SlaveAddrW 0xA0</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SlaveAddrR 0xA1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//总线引脚定义</span></span><br><span class="line">sbit SDA = P2^<span class="number">1</span>;  <span class="comment">/* 数据线 */</span></span><br><span class="line">sbit SCL = P2^<span class="number">0</span>;  <span class="comment">/* 时钟线 */</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">IIC_Delay</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> i)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span>&#123;_nop_();&#125;</span><br><span class="line">    <span class="keyword">while</span>(i--);        </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//总线启动条件</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">IIC_Start</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    SDA = <span class="number">1</span>;</span><br><span class="line">    SCL = <span class="number">1</span>;</span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">    SDA = <span class="number">0</span>;</span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">    SCL = <span class="number">0</span>;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//总线停止条件</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">IIC_Stop</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    SDA = <span class="number">0</span>;</span><br><span class="line">    SCL = <span class="number">1</span>;</span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">    SDA = <span class="number">1</span>;</span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//发送应答</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">IIC_SendAck</span><span class="params">(bit ackbit)</span></span><br><span class="line">&#123;</span><br><span class="line">    SCL = <span class="number">0</span>;</span><br><span class="line">    SDA = ackbit;  					<span class="comment">// 0：应答，1：非应答</span></span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">    SCL = <span class="number">1</span>;</span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">    SCL = <span class="number">0</span>; </span><br><span class="line">    SDA = <span class="number">1</span>;</span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//等待应答</span></span><br><span class="line">bit <span class="title function_">IIC_WaitAck</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    bit ackbit;</span><br><span class="line">	</span><br><span class="line">    SCL  = <span class="number">1</span>;</span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">    ackbit = SDA;</span><br><span class="line">    SCL = <span class="number">0</span>;</span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">    <span class="keyword">return</span> ackbit;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//通过I2C总线发送数据</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">IIC_SendByte</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> byt)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> i;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;<span class="number">8</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        SCL  = <span class="number">0</span>;</span><br><span class="line">        IIC_Delay(DELAY_TIME);</span><br><span class="line">        <span class="keyword">if</span>(byt &amp; <span class="number">0x80</span>) SDA  = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> SDA  = <span class="number">0</span>;</span><br><span class="line">        IIC_Delay(DELAY_TIME);</span><br><span class="line">        SCL = <span class="number">1</span>;</span><br><span class="line">        byt &lt;&lt;= <span class="number">1</span>;</span><br><span class="line">        IIC_Delay(DELAY_TIME);</span><br><span class="line">    &#125;</span><br><span class="line">    SCL  = <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//从I2C总线上接收数据</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> <span class="title function_">IIC_RecByte</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> i, da;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;<span class="number">8</span>; i++)</span><br><span class="line">    &#123;   </span><br><span class="line">    	SCL = <span class="number">1</span>;</span><br><span class="line">	IIC_Delay(DELAY_TIME);</span><br><span class="line">	da &lt;&lt;= <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span>(SDA) da |= <span class="number">1</span>;</span><br><span class="line">	SCL = <span class="number">0</span>;</span><br><span class="line">	IIC_Delay(DELAY_TIME);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> da;    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//=============单字节写入=================//</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">write_byte_at24c02</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> adrr, <span class="type">unsigned</span> <span class="type">char</span> dat)</span></span><br><span class="line">&#123;</span><br><span class="line">	IIC_Start();</span><br><span class="line">	IIC_SendByte(<span class="number">0xA0</span>);		<span class="comment">//写入a0，读取a1</span></span><br><span class="line">	IIC_WaitAck();</span><br><span class="line">	</span><br><span class="line">	IIC_SendByte(adrr);</span><br><span class="line">	IIC_WaitAck();</span><br><span class="line">	</span><br><span class="line">	IIC_SendByte(dat);</span><br><span class="line">	IIC_WaitAck();</span><br><span class="line">	</span><br><span class="line">	IIC_Stop(); </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//=============单字节读取=================//</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> <span class="title function_">read_byte_at24c02</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> adrr)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> temp;</span><br><span class="line"></span><br><span class="line">	IIC_Start();</span><br><span class="line">	IIC_SendByte(<span class="number">0xA0</span>);		<span class="comment">//写入a0，读取a1</span></span><br><span class="line">	IIC_WaitAck();</span><br><span class="line"></span><br><span class="line">	IIC_SendByte(adrr);</span><br><span class="line">	IIC_WaitAck();</span><br><span class="line"></span><br><span class="line">	IIC_Start();</span><br><span class="line">	IIC_SendByte(<span class="number">0xA1</span>);		<span class="comment">//写入a0，读取a1</span></span><br><span class="line">	IIC_WaitAck();</span><br><span class="line"></span><br><span class="line">	temp = IIC_RecByte();</span><br><span class="line"></span><br><span class="line">	IIC_Stop();</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//以下代码省赛不要求掌握,学过指针的同学可以了解以下</span></span><br><span class="line"><span class="comment">//=============多字节写入=================//</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">write_nbyte_at24c02</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> adrr, <span class="type">unsigned</span> <span class="type">char</span> *dat,<span class="type">unsigned</span> <span class="type">char</span> lenth)</span></span><br><span class="line">&#123;</span><br><span class="line">	IIC_Start();</span><br><span class="line">	IIC_SendByte(<span class="number">0xA0</span>);		<span class="comment">//写入a0，读取a1</span></span><br><span class="line">	IIC_WaitAck();</span><br><span class="line">	</span><br><span class="line">	IIC_SendByte(adrr);</span><br><span class="line">	IIC_WaitAck();</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">while</span>(lenth--)</span><br><span class="line">	&#123;		</span><br><span class="line">	IIC_SendByte(*dat);</span><br><span class="line">	IIC_WaitAck();	</span><br><span class="line">	dat++;</span><br><span class="line">	&#125;	</span><br><span class="line">		</span><br><span class="line">	IIC_Stop(); </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//=============多字节读取================//</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">read_nbyte_at24c02</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> adrr, <span class="type">unsigned</span> <span class="type">char</span> *dat,<span class="type">unsigned</span> <span class="type">char</span> lenth)</span></span><br><span class="line">&#123;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	IIC_Start();</span><br><span class="line">	IIC_SendByte(<span class="number">0xA0</span>);		<span class="comment">//写入a0，读取a1</span></span><br><span class="line">	IIC_WaitAck();</span><br><span class="line"></span><br><span class="line">	IIC_SendByte(adrr);</span><br><span class="line">	IIC_WaitAck();</span><br><span class="line"></span><br><span class="line">	IIC_Start();</span><br><span class="line">	IIC_SendByte(<span class="number">0xA1</span>);		<span class="comment">//写入a0，读取a1</span></span><br><span class="line">	IIC_WaitAck();</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">while</span>(--lenth)</span><br><span class="line">	&#123;</span><br><span class="line">		*dat = IIC_RecByte();</span><br><span class="line">		IIC_SendAck(<span class="number">0</span>); <span class="comment">//  拉低</span></span><br><span class="line">		dat++;</span><br><span class="line">	&#125;	</span><br><span class="line"></span><br><span class="line">	 *dat = IIC_RecByte();</span><br><span class="line"></span><br><span class="line">	IIC_Stop();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>main.c</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;reg52.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;iic.h&quot;</span></span></span><br><span class="line"></span><br><span class="line">sfr AUXR = <span class="number">0x8e</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">unsigned</span> code smg_duanma[<span class="number">18</span>] = &#123;<span class="number">0xc0</span>,<span class="number">0xf9</span>,<span class="number">0xa4</span>,<span class="number">0xb0</span>,<span class="number">0x99</span>,<span class="number">0x92</span>,<span class="number">0x82</span>,<span class="number">0xf8</span>,<span class="number">0x80</span>,<span class="number">0x90</span>, <span class="comment">//0-9</span></span><br><span class="line">                          <span class="number">0x88</span>,<span class="number">0x80</span>,<span class="number">0xc6</span>,<span class="number">0xc0</span>,<span class="number">0x86</span>,<span class="number">0x8e</span>,					 <span class="comment">//A-F</span></span><br><span class="line">                          <span class="number">0xbf</span>,<span class="number">0x7f</span>&#125;;									  <span class="comment">//-,.</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> smg_we[] = &#123;<span class="number">0x01</span>,<span class="number">0x02</span>,<span class="number">0x04</span>,<span class="number">0x08</span>,<span class="number">0x10</span>,<span class="number">0x20</span>,<span class="number">0x40</span>,<span class="number">0x80</span>&#125;;</span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> smg_table[<span class="number">8</span>];</span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> smg_dat[<span class="number">8</span>];</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Timer0Init</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Delay1ms</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">delay_ms</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> ms)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">while</span>(ms--)</span><br><span class="line">	&#123;</span><br><span class="line">		Delay1ms();	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">INIT1</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> n,<span class="type">unsigned</span> <span class="type">char</span> value)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">switch</span>(n)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">4</span>: P2 = (P2 &amp; <span class="number">0x1f</span>) | <span class="number">0x80</span>; P0 = value; P2 &amp;= <span class="number">0x1f</span>; <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">5</span>: P2 = (P2 &amp; <span class="number">0x1f</span>) | <span class="number">0xa0</span>; P0 = value; P2 &amp;= <span class="number">0x1f</span>; <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">6</span>: P2 = (P2 &amp; <span class="number">0x1f</span>) | <span class="number">0xc0</span>; P0 = value; P2 &amp;= <span class="number">0x1f</span>; <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">7</span>: P2 = (P2 &amp; <span class="number">0x1f</span>) | <span class="number">0xe0</span>; P0 = value; P2 &amp;= <span class="number">0x1f</span>; <span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">display</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">static</span> <span class="type">unsigned</span> <span class="type">char</span> i;	                     <span class="comment">//设为静态变量下次调用值不变</span></span><br><span class="line">	</span><br><span class="line">	INIT1(<span class="number">6</span>,smg_we[i]);   	<span class="comment">//先位选</span></span><br><span class="line">	INIT1(<span class="number">7</span>,smg_table[i]);	<span class="comment">//段码</span></span><br><span class="line">	i++;</span><br><span class="line">	<span class="keyword">if</span>(i &gt;= <span class="number">8</span>)i = <span class="number">0</span>;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">timer0_isr</span><span class="params">()</span> interrupt 1	</span><br><span class="line">&#123;</span><br><span class="line">	 display();	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//============单字节==========//</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;	</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> temp_24c02;</span><br><span class="line">	Timer0Init();</span><br><span class="line">	INIT1(<span class="number">5</span>,<span class="number">0x00</span>);</span><br><span class="line">	INIT1(<span class="number">4</span>,<span class="number">0xff</span>);</span><br><span class="line">		</span><br><span class="line">	write_byte_at24c02(<span class="number">0x55</span>,<span class="number">0xA3</span>);</span><br><span class="line">	delay_ms(<span class="number">10</span>);				           <span class="comment">//延时不能低于5ms</span></span><br><span class="line">	temp_24c02 = read_byte_at24c02(<span class="number">0x55</span>);</span><br><span class="line">	smg_table[<span class="number">0</span>] = smg_duanma[temp_24c02 / <span class="number">0x10</span>];			   </span><br><span class="line">	smg_table[<span class="number">1</span>] = smg_duanma[temp_24c02 % <span class="number">0x10</span>];</span><br><span class="line">	smg_table[<span class="number">2</span>] = <span class="number">0xff</span>;</span><br><span class="line">	smg_table[<span class="number">3</span>] = <span class="number">0xff</span>;</span><br><span class="line">	smg_table[<span class="number">4</span>] = <span class="number">0xff</span>;</span><br><span class="line">	smg_table[<span class="number">5</span>] = <span class="number">0xff</span>;</span><br><span class="line">	smg_table[<span class="number">6</span>] = <span class="number">0xff</span>;</span><br><span class="line">	smg_table[<span class="number">7</span>] = <span class="number">0xff</span>;	</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//想看看多字节的烧录效果的可以把上面的主函数注释掉,下面的主函数取消注释</span></span><br><span class="line"><span class="comment">//============多字节==========//</span></span><br><span class="line"><span class="comment">//void main()</span></span><br><span class="line"><span class="comment">//&#123;	</span></span><br><span class="line"><span class="comment">//	unsigned char temp_24c02[8] = &#123;2,0,2,2,0,3,0,1&#125;; //日期</span></span><br><span class="line"><span class="comment">//	Timer0Init();</span></span><br><span class="line"><span class="comment">//	INIT1(5,0x00);</span></span><br><span class="line"><span class="comment">//	INIT1(4,0xff);</span></span><br><span class="line"><span class="comment">// 	INIT1(7,0xff);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//	write_nbyte_at24c02(0x55,temp_24c02,8);</span></span><br><span class="line"><span class="comment">//	delay_ms(10);				           //延时不能低于5ms</span></span><br><span class="line"><span class="comment">//	read_nbyte_at24c02(0x55,smg_dat,8);</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">//	smg_table[0] = smg_duanma[smg_dat[0]];</span></span><br><span class="line"><span class="comment">//	smg_table[1] = smg_duanma[smg_dat[1]];</span></span><br><span class="line"><span class="comment">//	smg_table[2] = smg_duanma[smg_dat[2]];</span></span><br><span class="line"><span class="comment">//	smg_table[3] = smg_duanma[smg_dat[3]];</span></span><br><span class="line"><span class="comment">//	smg_table[4] = smg_duanma[smg_dat[4]];</span></span><br><span class="line"><span class="comment">//	smg_table[5] = smg_duanma[smg_dat[5]];</span></span><br><span class="line"><span class="comment">//	smg_table[6] = smg_duanma[smg_dat[6]];</span></span><br><span class="line"><span class="comment">//	smg_table[7] = smg_duanma[smg_dat[7]];		</span></span><br><span class="line"><span class="comment">//	while(1);	</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Delay1ms</span><span class="params">()</span>		<span class="comment">//@12.000MHz</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> i, j;</span><br><span class="line"></span><br><span class="line">	i = <span class="number">12</span>;</span><br><span class="line">	j = <span class="number">169</span>;</span><br><span class="line">	<span class="keyword">do</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">while</span> (--j);</span><br><span class="line">	&#125; <span class="keyword">while</span> (--i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Timer0Init</span><span class="params">()</span>		<span class="comment">//2毫秒@12.000MHz</span></span><br><span class="line">&#123;</span><br><span class="line">	AUXR |= <span class="number">0x80</span>;		<span class="comment">//定时器时钟1T模式</span></span><br><span class="line">	TMOD &amp;= <span class="number">0xF0</span>;		<span class="comment">//设置定时器模式</span></span><br><span class="line">	TL0 = <span class="number">0x40</span>;		<span class="comment">//设置定时初始值</span></span><br><span class="line">	TH0 = <span class="number">0xA2</span>;		<span class="comment">//设置定时初始值</span></span><br><span class="line">	TF0 = <span class="number">0</span>;		<span class="comment">//清除TF0标志</span></span><br><span class="line">	TR0 = <span class="number">1</span>;		<span class="comment">//定时器0开始计时</span></span><br><span class="line"> 	 	</span><br><span class="line">	ET0 = <span class="number">1</span>;</span><br><span class="line">	EA = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="PCF8591模块"><a href="#PCF8591模块" class="headerlink" title="PCF8591模块"></a>PCF8591模块</h2><p>PCF8591是一个单片集成、单独供电、低功耗、8-bit CMOS数据获取器件。PCF8591具有4个模拟输入、1个模拟输出和1个串行I²C总线接口。PCF8591的3个地址引脚A0, A1和A2可用于硬件地址编程，允许在同个I2C总线上接入8个PCF8591器件，而无需额外的硬件。在PCF8591器件上输入输出的地址、控制和数据信号都是通过双线双向I2C总线以串行的方式进行传输。<br><img src="https://img-blog.csdnimg.cn/3c4aded0bee0459b939bf5ca3c5a965f.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5LiA5Y-q5Y-v54ix55qE55qu5ZKU5ZKY,size_12,color_FFFFFF,t_70,g_se,x_16" alt="img"></p>
+<p>四个通道(常考1,3通道,0通道也会考但是要备一个万用表.考试一般考场会提供,但是这几年疫情都是线上,考得少.)</p>
+<p><code>AIN0</code>：接到右边排针上，可以用杜邦线连外部模拟电压信号<br><code>AIN1</code>：接到光敏电阻上<br><code>AIN2</code>：放大器的输出端<br><code>AIN3</code>：接到滑动变阻器Rb2上   </p>
+<p>在i2c总线系统中的每个PCF8591设备通过发送一个有效的地址来激活。该地址由一个固定部分和一个可编程部分组成。可编程部分必须根据地址引脚A0、A1和A2进行设置。由原理图知A0、A1和A2都接地。在I2c总线协议中，该地址总是必须作为启动条件后的第一个字节发送。地址字节的最后一位是读&#x2F;写位，它设置了以下数据传输的方向。写地址为:<strong>0x90</strong>      读地址为:<strong>0x91</strong><br>原理不多赘述,与at24c02一样<strong>我们只需要记住读和写的字节就行</strong>,当然可以查阅芯片手册了解具体原理.</p>
+<h3 id="蓝桥杯代码-1"><a href="#蓝桥杯代码-1" class="headerlink" title="蓝桥杯代码:"></a>蓝桥杯代码:</h3><p><strong>iic.h</strong>	</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> _IIC_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _IIC_H</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">IIC_Start</span><span class="params">(<span class="type">void</span>)</span>; </span><br><span class="line"><span class="type">void</span> <span class="title function_">IIC_Stop</span><span class="params">(<span class="type">void</span>)</span>;  </span><br><span class="line">bit <span class="title function_">IIC_WaitAck</span><span class="params">(<span class="type">void</span>)</span>;  </span><br><span class="line"><span class="type">void</span> <span class="title function_">IIC_SendAck</span><span class="params">(bit ackbit)</span>; </span><br><span class="line"><span class="type">void</span> <span class="title function_">IIC_SendByte</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> byt)</span>; </span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> <span class="title function_">IIC_RecByte</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"> </span><br><span class="line"><span class="type">void</span> <span class="title function_">write_8591</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> dac)</span>;</span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> <span class="title function_">read_8591_channel</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> channel_n)</span>;</span><br><span class="line"><span class="comment">//unsigned int read_8591(unsigned char dac); </span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p><strong>iic.c</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  程序说明: IIC总线驱动程序</span></span><br><span class="line"><span class="comment">  软件环境: Keil uVision 4.10 </span></span><br><span class="line"><span class="comment">  硬件环境: CT107单片机综合实训平台 8051，12MHz</span></span><br><span class="line"><span class="comment">  日    期: 2011-8-9</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;reg52.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;intrins.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;iic.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DELAY_TIME 5</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SlaveAddrW 0xA0</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SlaveAddrR 0xA1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//总线引脚定义</span></span><br><span class="line">sbit SDA = P2^<span class="number">1</span>;  <span class="comment">/* 数据线 */</span></span><br><span class="line">sbit SCL = P2^<span class="number">0</span>;  <span class="comment">/* 时钟线 */</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">IIC_Delay</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> i)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span>&#123;_nop_();&#125;</span><br><span class="line">    <span class="keyword">while</span>(i--);        </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//总线启动条件</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">IIC_Start</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    SDA = <span class="number">1</span>;</span><br><span class="line">    SCL = <span class="number">1</span>;</span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">    SDA = <span class="number">0</span>;</span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">    SCL = <span class="number">0</span>;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//总线停止条件</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">IIC_Stop</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    SDA = <span class="number">0</span>;</span><br><span class="line">    SCL = <span class="number">1</span>;</span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">    SDA = <span class="number">1</span>;</span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//发送应答</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">IIC_SendAck</span><span class="params">(bit ackbit)</span></span><br><span class="line">&#123;</span><br><span class="line">    SCL = <span class="number">0</span>;</span><br><span class="line">    SDA = ackbit;  					<span class="comment">// 0：应答，1：非应答</span></span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">    SCL = <span class="number">1</span>;</span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">    SCL = <span class="number">0</span>; </span><br><span class="line">    SDA = <span class="number">1</span>;</span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//等待应答</span></span><br><span class="line">bit <span class="title function_">IIC_WaitAck</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    bit ackbit;</span><br><span class="line">	</span><br><span class="line">    SCL  = <span class="number">1</span>;</span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">    ackbit = SDA;</span><br><span class="line">    SCL = <span class="number">0</span>;</span><br><span class="line">    IIC_Delay(DELAY_TIME);</span><br><span class="line">    <span class="keyword">return</span> ackbit;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//通过I2C总线发送数据</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">IIC_SendByte</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> byt)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> i;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;<span class="number">8</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        SCL  = <span class="number">0</span>;</span><br><span class="line">        IIC_Delay(DELAY_TIME);</span><br><span class="line">        <span class="keyword">if</span>(byt &amp; <span class="number">0x80</span>) SDA  = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> SDA  = <span class="number">0</span>;</span><br><span class="line">        IIC_Delay(DELAY_TIME);</span><br><span class="line">        SCL = <span class="number">1</span>;</span><br><span class="line">        byt &lt;&lt;= <span class="number">1</span>;</span><br><span class="line">        IIC_Delay(DELAY_TIME);</span><br><span class="line">    &#125;</span><br><span class="line">    SCL  = <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//从I2C总线上接收数据</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> <span class="title function_">IIC_RecByte</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> i, da;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;<span class="number">8</span>; i++)</span><br><span class="line">    &#123;   </span><br><span class="line">    	SCL = <span class="number">1</span>;</span><br><span class="line">	IIC_Delay(DELAY_TIME);</span><br><span class="line">	da &lt;&lt;= <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span>(SDA) da |= <span class="number">1</span>;</span><br><span class="line">	SCL = <span class="number">0</span>;</span><br><span class="line">	IIC_Delay(DELAY_TIME);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> da;    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//=======================PCF8591===========================//</span></span><br><span class="line"><span class="comment">/*channel_n只能填0、1、2、3</span></span><br><span class="line"><span class="comment"> *分别对应通道0、1、2、3</span></span><br><span class="line"><span class="comment"> *对应2进制也刚好和CONTRL BYTE发送给8591的最后两位一样</span></span><br><span class="line"><span class="comment"> *而因为不需要自动递增</span></span><br><span class="line"><span class="comment"> *则可以直接作为CONTRL BYTE发送给8591</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">write_8591</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> dac)</span>   <span class="comment">//写入电压值</span></span><br><span class="line">&#123;</span><br><span class="line">	IIC_Start();</span><br><span class="line">	IIC_SendByte(<span class="number">0x90</span>);		<span class="comment">//写入90，读取a1</span></span><br><span class="line">	IIC_WaitAck();</span><br><span class="line">	</span><br><span class="line">	IIC_SendByte(<span class="number">0x40</span>);</span><br><span class="line">	IIC_WaitAck();</span><br><span class="line">	</span><br><span class="line">	IIC_SendByte(dac);</span><br><span class="line">	IIC_WaitAck();</span><br><span class="line">	</span><br><span class="line">	IIC_Stop(); </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> <span class="title function_">read_8591_channel</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span> channel_n)</span>	   <span class="comment">//读电压</span></span><br><span class="line">&#123;</span><br><span class="line">	IIC_Start();</span><br><span class="line">	IIC_SendByte(<span class="number">0x90</span>);		</span><br><span class="line">	IIC_WaitAck();</span><br><span class="line"></span><br><span class="line">	IIC_SendByte(channel_n);		<span class="comment">//channel_n只能填0、1、2、3</span></span><br><span class="line">	IIC_WaitAck();</span><br><span class="line"></span><br><span class="line">	IIC_Start();</span><br><span class="line">	IIC_SendByte(<span class="number">0x91</span>);		</span><br><span class="line">	IIC_WaitAck();</span><br><span class="line"></span><br><span class="line">	channel_n = IIC_RecByte();		   <span class="comment">//每次读到的都是上次转化的结果，读两次，</span></span><br><span class="line">	IIC_SendAck(<span class="number">0</span>);</span><br><span class="line">	channel_n = IIC_RecByte();</span><br><span class="line"></span><br><span class="line">	IIC_Stop();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> channel_n;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//unsigned int read_8591(unsigned char dac)   //读取电压值、、一次读完4个</span></span><br><span class="line"><span class="comment">//&#123;</span></span><br><span class="line"><span class="comment">//	unsigned char channel_1,channel_3;</span></span><br><span class="line"><span class="comment">//	IIC_Start();</span></span><br><span class="line"><span class="comment">//	IIC_SendByte(0x90);		</span></span><br><span class="line"><span class="comment">//	IIC_WaitAck();</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//	IIC_SendByte(0x04);</span></span><br><span class="line"><span class="comment">//	IIC_WaitAck();</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//	IIC_Start();</span></span><br><span class="line"><span class="comment">//	IIC_SendByte(0x91);		</span></span><br><span class="line"><span class="comment">//	IIC_WaitAck();</span></span><br><span class="line"><span class="comment">//	</span></span><br><span class="line"><span class="comment">//	channel_1 = IIC_RecByte();</span></span><br><span class="line"><span class="comment">//	IIC_SendAck(0);</span></span><br><span class="line"><span class="comment">//	</span></span><br><span class="line"><span class="comment">//	IIC_RecByte();           //channel_2不常用，但要读，不用保存</span></span><br><span class="line"><span class="comment">//	IIC_SendAck(0);</span></span><br><span class="line"><span class="comment">//	</span></span><br><span class="line"><span class="comment">//	channel_3 = IIC_RecByte();</span></span><br><span class="line"><span class="comment">//	IIC_SendAck(0);</span></span><br><span class="line"><span class="comment">//	</span></span><br><span class="line"><span class="comment">//	IIC_RecByte();               //4同2，且不用回应</span></span><br><span class="line"><span class="comment">//		</span></span><br><span class="line"><span class="comment">//	IIC_Stop();</span></span><br><span class="line"><span class="comment">//	return channel_1 &lt;&lt; 8 | channel_3;</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>mian.c</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;reg52.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;iic.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> u8 unsigned char</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> u16 unsigned int</span></span><br><span class="line"></span><br><span class="line">sfr AUXR = <span class="number">0x8e</span>;</span><br><span class="line"></span><br><span class="line">u8 code smg_duan[] = &#123;<span class="number">0xc0</span>,<span class="number">0xf9</span>,<span class="number">0xa4</span>,<span class="number">0xb0</span>,<span class="number">0x99</span>,<span class="number">0x92</span>,<span class="number">0x82</span>,<span class="number">0xf8</span>,<span class="number">0x80</span>,<span class="number">0x90</span>,</span><br><span class="line">					  <span class="number">0x88</span>,<span class="number">0x80</span>,<span class="number">0xc6</span>,<span class="number">0xc0</span>,<span class="number">0x86</span>,<span class="number">0x8e</span>,					 <span class="comment">//A-F</span></span><br><span class="line">                      <span class="number">0xbf</span>,<span class="number">0x7f</span>&#125;;		</span><br><span class="line">u8 smg_we[<span class="number">8</span>] = &#123;<span class="number">0x01</span>,<span class="number">0x02</span>,<span class="number">0x04</span>,<span class="number">0x08</span>,<span class="number">0x10</span>,<span class="number">0x20</span>,<span class="number">0x40</span>,<span class="number">0x80</span>&#125;;</span><br><span class="line">u8 table[<span class="number">8</span>];</span><br><span class="line">u8 smg_dat[<span class="number">8</span>];</span><br><span class="line"></span><br><span class="line">u16 temp_8951;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Delay1ms</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Timer0Init</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Delayms</span><span class="params">(u16 ms)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">while</span>(ms--)</span><br><span class="line">	&#123;</span><br><span class="line">	 Delay1ms();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">INIT1</span><span class="params">(u8 n,u8 value)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">switch</span>(n)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">4</span>: P2 = (P2 &amp; <span class="number">0x1f</span>) | <span class="number">0x80</span>; P0 = value; P2 &amp;= <span class="number">0x1f</span>; <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">5</span>: P2 = (P2 &amp; <span class="number">0x1f</span>) | <span class="number">0xa0</span>; P0 = value; P2 &amp;= <span class="number">0x1f</span>; <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">6</span>: P2 = (P2 &amp; <span class="number">0x1f</span>) | <span class="number">0xc0</span>; P0 = value; P2 &amp;= <span class="number">0x1f</span>; <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">7</span>: P2 = (P2 &amp; <span class="number">0x1f</span>) | <span class="number">0xe0</span>; P0 = value; P2 &amp;= <span class="number">0x1f</span>; <span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">display</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line"> 	<span class="type">static</span> u8 i;			   <span class="comment">//设为静态变量下次调用值不变</span></span><br><span class="line"> 	INIT1(<span class="number">7</span>,<span class="number">0xff</span>);	         <span class="comment">//消隐          </span></span><br><span class="line">	INIT1(<span class="number">6</span>,smg_we[i]);   	<span class="comment">//先位选</span></span><br><span class="line">	INIT1(<span class="number">7</span>,table[i]);	<span class="comment">//段码</span></span><br><span class="line">	i++;</span><br><span class="line">	<span class="keyword">if</span>(i &gt;= <span class="number">8</span>)i = <span class="number">0</span>;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">SMGtable</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	table[<span class="number">0</span>] = smg_duan[smg_dat[<span class="number">0</span>]];</span><br><span class="line">	table[<span class="number">1</span>] = smg_duan[smg_dat[<span class="number">1</span>]];	</span><br><span class="line">	table[<span class="number">2</span>] = <span class="number">0xff</span>;<span class="comment">//smg_duan[smg_dat[2]];	</span></span><br><span class="line">	table[<span class="number">3</span>] = <span class="number">0xff</span>;<span class="comment">//smg_duan[smg_dat[3]];	</span></span><br><span class="line">	table[<span class="number">4</span>] = smg_duan[smg_dat[<span class="number">4</span>]];	</span><br><span class="line">	table[<span class="number">5</span>] = smg_duan[smg_dat[<span class="number">5</span>]];	</span><br><span class="line">	table[<span class="number">6</span>] = <span class="number">0xff</span>;<span class="comment">//smg_duan[smg_dat[6]];	</span></span><br><span class="line">	table[<span class="number">7</span>] = <span class="number">0xff</span>;<span class="comment">//smg_duan[smg_dat[7]];		</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Timer0Isr</span><span class="params">(<span class="type">void</span>)</span> interrupt 1</span><br><span class="line">&#123;</span><br><span class="line">	 display();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//void main()</span></span><br><span class="line"><span class="comment">//&#123;</span></span><br><span class="line"><span class="comment">//	INIT1(5,0x00);</span></span><br><span class="line"><span class="comment">//	INIT1(4,0xff);</span></span><br><span class="line"><span class="comment">//	Timer0Init();</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//	write_8591(127);                  //0-255</span></span><br><span class="line"><span class="comment">//	</span></span><br><span class="line"><span class="comment">//	while(1)</span></span><br><span class="line"><span class="comment">//	&#123;</span></span><br><span class="line"><span class="comment">//	 SMGtable();</span></span><br><span class="line"><span class="comment">//	 temp_8951 = read_8591();</span></span><br><span class="line"><span class="comment">//	 smg_dat[0] = temp_8951 / 0x1000;</span></span><br><span class="line"><span class="comment">//	 smg_dat[1] = temp_8951 / 0x100 % 0x10;</span></span><br><span class="line"><span class="comment">//	 smg_dat[4] = temp_8951 / 0x10 % 0x10;</span></span><br><span class="line"><span class="comment">//	 smg_dat[5] = temp_8951 % 0x10;</span></span><br><span class="line"><span class="comment">//	&#125;</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	INIT1(<span class="number">5</span>,<span class="number">0x00</span>);</span><br><span class="line">	INIT1(<span class="number">4</span>,<span class="number">0xff</span>);</span><br><span class="line">	Timer0Init();</span><br><span class="line"></span><br><span class="line">	write_8591(<span class="number">127</span>);                  <span class="comment">//0-255	</span></span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">	</span><br><span class="line">	 SMGtable();</span><br><span class="line">	 temp_8951 = read_8591_channel(<span class="number">1</span>);	  <span class="comment">//读第一个通道</span></span><br><span class="line">	 temp_8951 &lt;&lt;= <span class="number">8</span>;			    <span class="comment">//左移8位</span></span><br><span class="line">	 Delayms(<span class="number">10</span>);</span><br><span class="line">	 temp_8951 |= read_8591_channel(<span class="number">3</span>);	     <span class="comment">//读第三个通道</span></span><br><span class="line">	 	  	 	</span><br><span class="line">	 smg_dat[<span class="number">0</span>] = temp_8951 / <span class="number">0x1000</span>;</span><br><span class="line">	 smg_dat[<span class="number">1</span>] = temp_8951 / <span class="number">0x100</span> % <span class="number">0x10</span>;</span><br><span class="line">	 smg_dat[<span class="number">4</span>] = temp_8951 / <span class="number">0x10</span> % <span class="number">0x10</span>;</span><br><span class="line">	 smg_dat[<span class="number">5</span>] = temp_8951 % <span class="number">0x10</span>;</span><br><span class="line">	&#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Timer0Init</span><span class="params">(<span class="type">void</span>)</span>		<span class="comment">//2毫秒@12.000MHz</span></span><br><span class="line">&#123;</span><br><span class="line">	AUXR |= <span class="number">0x80</span>;		<span class="comment">//定时器时钟1T模式</span></span><br><span class="line">	TMOD &amp;= <span class="number">0xF0</span>;		<span class="comment">//设置定时器模式</span></span><br><span class="line">	TL0 = <span class="number">0x40</span>;		<span class="comment">//设置定时初始值</span></span><br><span class="line">	TH0 = <span class="number">0xA2</span>;		<span class="comment">//设置定时初始值</span></span><br><span class="line">	TF0 = <span class="number">0</span>;		<span class="comment">//清除TF0标志</span></span><br><span class="line">	TR0 = <span class="number">1</span>;		<span class="comment">//定时器0开始计时</span></span><br><span class="line"></span><br><span class="line">	ET0 = <span class="number">1</span>;</span><br><span class="line">	EA = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Delay1ms</span><span class="params">()</span>		<span class="comment">//@12.000MHz</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> i, j;</span><br><span class="line"></span><br><span class="line">	i = <span class="number">12</span>;</span><br><span class="line">	j = <span class="number">169</span>;</span><br><span class="line">	<span class="keyword">do</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">while</span> (--j);</span><br><span class="line">	&#125; <span class="keyword">while</span> (--i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    <div class="post-widgets">
+    <div
+      class="social-share"
+      
+        data-sites="weibo,qq,wechat,tencent,douban,qzone,linkedin,diandian,facebook,twitter,google"
+      
+      
+        data-wechat-qrcode-title="share.title"
+      
+      
+        data-wechat-qrcode-helper="share.prompt"
+      
+    >
+    </div>
+  </div>
+  <script src="https://lib.baomitu.com/social-share.js/1.0.16/js/social-share.min.js"></script><script src="//sdk.jinrishici.com/v2/browser/jinrishici.js"></script>
+<script>
+  jinrishici.load((result) => {
+    let jrsc = document.getElementById('jrsc');
+    const data = result.data;
+    let author = data.origin.author;
+    let title = '《' + data.origin.title + '》';
+    let content = data.content.substr(0, data.content.length - 1);
+    let dynasty = data.origin.dynasty.substr(0, data.origin.dynasty.length - 1);
+    jrsc.innerText = content + ' @ ' + dynasty + '·' + author + title;
+  });
+</script>
+<div style="text-align: center"><span id="jrsc" >正在加载今日诗词....</span></div>
+
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatreward.png" alt="dugushang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipayreward.jpg" alt="dugushang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>dugushang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://dugusahng.github.io/2023/02/25/%E5%8D%95%E7%89%87%E6%9C%BA%E8%93%9D%E6%A1%A5%E6%9D%AF(%E4%BA%94)/" title="蓝桥杯单片机常用模块之五:iic通信">https://dugusahng.github.io/2023/02/25/单片机蓝桥杯(五)/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%93%9D%E6%A1%A5%E6%9D%AF/" rel="tag"># 蓝桥杯</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/02/11/%E8%93%9D%E6%A1%A5%E6%9D%AF%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97(%E4%BA%8C)/" rel="prev" title="蓝桥杯单片机常用模块之四:ds1302模块">
+      <i class="fa fa-chevron-left"></i> 蓝桥杯单片机常用模块之四:ds1302模块
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+<!--qq音乐插件-->
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--qqplaylist外链地址-->   
+<meting-js
+    server="tencent"
+    type="playlist" 
+    id="1416184443"
+    mini="false"
+    fixed="false"
+    list-folded="true"
+    autoplay="false"
+    volume="0.4"
+    theme="#FADFA3"
+    order="list"
+    loop="all"
+    preload="auto"
+    mutex="true">
+</meting-js>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%95%E7%89%87%E6%9C%BA%E8%93%9D%E6%A1%A5%E6%9D%AF-%E4%BA%94-IIC%E9%80%9A%E4%BF%A1%E4%B9%8BAT24C02-amp-PCF8591"><span class="nav-number">1.</span> <span class="nav-text">单片机蓝桥杯(五):IIC通信之AT24C02&amp;PCF8591</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IIC%E9%80%9A%E4%BF%A1"><span class="nav-number">1.2.</span> <span class="nav-text">IIC通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ATC4C02%E6%A8%A1%E5%9D%97"><span class="nav-number">1.3.</span> <span class="nav-text">ATC4C02模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E8%8A%82%E5%86%99"><span class="nav-number">1.3.1.</span> <span class="nav-text">字节写:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%93%E5%89%8D%E5%9C%B0%E5%9D%80%E8%AF%BB%E5%8F%96"><span class="nav-number">1.3.2.</span> <span class="nav-text">当前地址读取:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%93%9D%E6%A1%A5%E6%9D%AF%E4%BB%A3%E7%A0%81"><span class="nav-number">1.3.3.</span> <span class="nav-text">蓝桥杯代码:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PCF8591%E6%A8%A1%E5%9D%97"><span class="nav-number">1.4.</span> <span class="nav-text">PCF8591模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%93%9D%E6%A1%A5%E6%9D%AF%E4%BB%A3%E7%A0%81-1"><span class="nav-number">1.4.1.</span> <span class="nav-text">蓝桥杯代码:</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dugushang"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">dugushang</p>
+  <div class="site-description" itemprop="description">Life is like an adverse journey,    I am also a pedestrian</div>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dugusahng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dugusahng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+    
+    </div>
+  </aside>
+  
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dugushang</span>
+
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">33k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">55 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://lib.baomitu.com/canvas-nest.js/1.0.1/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+  
+
+    </div>
+</body>
+</html>
